@@ -1,5 +1,6 @@
 <?php
 
+namespace Catalogue\Serie;
 use DB\ConnectionFactory;
 
 require_once 'DB/ConnectionFactory.php';

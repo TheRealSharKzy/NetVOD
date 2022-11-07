@@ -1,0 +1,179 @@
+* {
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+}
+
+body {
+    font-size:1em;
+    background-color: blanchedalmond;
+    display:flex;
+    flex-direction: column;
+}
+
+header, nav, footer {
+    background-color:darksalmon
+}
+
+header {
+    text-align: center;
+    margin: 0 10%;
+    border-width: 0 3px;
+    border-color: black;
+    border-style: solid;
+    font-size: 2vw;
+    transition: all 1s;
+    padding: 1em;
+}
+
+main section * {
+    margin: 0.5em;
+}
+
+.bLink {
+    background-color:rgb(241, 204, 187);
+    border: 2px solid darksalmon;
+    padding: 2px;
+    text-decoration: none;
+    color:black;
+    border-radius:5px;
+}
+
+nav{
+    border:3px solid black;
+    border-radius: 0 0 20px 20px;
+    margin: 0 10%;
+    display: flex;
+    font-size: 2vw;
+    justify-content:space-between;
+    transition: all 1s;
+    padding: 1.8vh 3vw;
+
+}
+
+.sous{
+    display: none;
+}
+
+nav a{
+    font-weight:bold;
+    text-decoration: none;
+    color: black;
+}
+
+a:hover{
+    opacity: 0.5;
+}
+
+.rubrique:hover .sous{
+    font-size: 1.5vw;;
+    display:flex;
+    flex-direction: column;
+}
+
+main {
+    width:100%;
+    max-width: 1000px;
+    margin:auto;
+    margin-bottom:1em;
+}
+
+h2 {
+    padding: 0.5em;
+    margin-top: 1em;
+    margin-left: 3vw;
+    transition: all 1s;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+main > article {
+    text-align: center;
+    border-radius: 20px;
+    border:3px solid black;
+    padding: 1em;
+    background-color: white;
+}
+
+article p{
+    text-align: left;
+}
+
+main > section {
+    margin: 1em;
+}
+
+footer {
+    display:flex;
+    justify-content: space-between;
+    border-width: 3px 0 0 0;
+    border-style: solid;
+    border-color: black;
+    padding: 1vw;
+}
+
+@media screen and (max-width: 1000px)
+{
+    header, nav
+    {
+        margin:0;
+    }
+}
+
+@media screen and (max-width: 580px){
+    nav >a, nav div> a{
+        font-size: 20px;
+        font-weight: 1000;
+    }
+
+    .sous{
+        font-size: 1.5vw;
+        display: flex;
+        flex-direction: column;
+        margin:10px;
+    }
+
+    header {
+        /**/
+        border: 3px solid black;
+        border-top-width: 0;
+        border-radius: 0 0 20px 20px;
+        /**/
+        order:1;
+    }
+
+    header, nav {
+        transition: none;
+    }
+
+    h1 {
+        font-size: 3em;
+    }
+
+    main {
+        order:2;
+    }
+
+    nav {
+        border-radius: 20px 20px 0 0;
+        border-bottom: 0;
+        margin: 0;
+        width: 100%;
+        order:3;
+        display:block;
+        font-weight: bold;
+    }
+
+    footer {
+        order:4;
+        display:block;
+        text-align:center;
+        border-width:0 3px;
+    }
+
+    section div{
+        flex-direction: column;
+        align-items: center;
+    }
+
+}

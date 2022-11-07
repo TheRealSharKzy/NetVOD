@@ -1,5 +1,6 @@
 <?php
 
+namespace Catalogue\Episode;
 class episode
 {
     private String $nom,$urlImage,$resume;
