@@ -5,7 +5,6 @@ namespace Action;
 require_once 'User.php';
 
 use Auth\Auth;
-use DB\ConnectionFactory;
 
 class SigninAction extends Action
 {
@@ -34,7 +33,7 @@ class SigninAction extends Action
                 return "<meta http-equiv='refresh' content='url=$action'>";
             }
         }else{
-            return "iaccessible.";
+            return "inaccessible.";
         }
     }
 }
