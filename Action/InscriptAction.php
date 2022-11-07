@@ -21,14 +21,17 @@ class InscriptAction extends Action
  <style>
         
         div{
-        display: flex;
+            display: flex;
         }
-        
-        
-          input, label {
-          text-align: left; 
-          display: block;
-          }
+               
+        input, label {
+            text-align: left; 
+            display: block;
+         }
+          
+        form{
+            display: inline-block;
+        }
           
 </style>";
         if($this->http_method=='GET'){

@@ -17,19 +17,27 @@ class SigninAction extends Action
           
 </table>
         
-          <label>Email:</label>
-          <input type=\"email\" name=\"email\" required><br><br>
-          <label>mod de passe:</label>
-          <input type=\"password\" name=\"password\" required><br><br>
+          <div><label>Email:</label><input type=\"email\" name=\"email\" required></div>
+          <div><label>mod de passe:</label><input type=\"password\" name=\"password\" required></div>
           <button type=\"submit\">Sign in</button>
           </form>
         
           <style>
-          form {
-          display: inline-block;
-          text-align: left;
-          }
           
+          
+          div{
+            display: flex;
+        }
+               
+        input, label {
+            text-align: left; 
+            display: block;
+         }
+          
+        form{
+            display: inline-block;
+        } 
+      
 </style>
         
         ";
