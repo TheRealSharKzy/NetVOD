@@ -24,12 +24,17 @@ class EpisodeAction extends Action
                  <br class='epi'> " . $this->ep->resume . "</br>
                  </div>
                  
+                 <form>
+                 <input type='number' value='note' placeholder='Note de la série' min='0' max='5'>
+                 <input type='text' value='Commentaire' placeholder='Commentaire'>      
+                 <button type='submit'>Valider</button>
+                 </form>
+                 
                  <style>
                     
                     body{
-                      color: ;
+                      color: white;
                       background-color: black;
-
                     }
                     
                     video{
@@ -39,7 +44,11 @@ class EpisodeAction extends Action
                     div.info{
                         display: block;
                         text-align: center;
-                        text-decoration-color: white;
+                    }
+                    
+                    input{
+                        display: block;
+                        padding: 5px; 
                     }
                  
                  </style>

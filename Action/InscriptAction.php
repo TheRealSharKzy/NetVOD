@@ -11,12 +11,26 @@ class InscriptAction extends Action
     {
 
         $page="<form method='post'>
-pseudo: <input type='text' name='pseudo' required>
-email: <input type='email' name='email' required>
-password: <input type='password' name='password' required>
-password egin: <input type='password' name='password2' required>
-<input type='submit' value='inscript'>
-</form>";
+<div><label>Pseudo:</label> <input type='text' name='pseudo' required></div>
+<div><label>Email:</label> <input type='email' name='email' required></div>
+<div><label>Password:</label> <input type='password' name='password' required></div>
+<div><label>Repeat password:</label> <input type='password' name='password2' required></div>
+<button type='submit'>S'inscrire</button>
+</form>
+
+ <style>
+        
+        div{
+        display: flex;
+        }
+        
+        
+          input, label {
+          text-align: left; 
+          display: block;
+          }
+          
+</style>";
         if($this->http_method=='GET'){
             return $page;
         }elseif ($this->http_method=='POST'){

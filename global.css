@@ -86,11 +86,15 @@ main > section {
 
 footer {
     display:flex;
+    position: fixed;
     justify-content: space-between;
     border-width: 3px 0 0 0;
     border-style: solid;
     border-color: black;
     padding: 1vw;
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }
 
 @media screen and (max-width: 1000px)

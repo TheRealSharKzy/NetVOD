@@ -12,7 +12,7 @@ class Dispatcher
 
         $action = $_GET['action'] ?? null;
 
-        if(!is_null($action) && isset($_SESSION['user'])){
+        if(!is_null($action)){
 
 
             switch ($action){
@@ -47,10 +47,10 @@ class Dispatcher
     </header>
 
     <nav>
-        <a href="./">Accueil</a>
+        <a href="?action=inscript">Register</a>
 
         <div class="rubrique">
-            <a href="html/rubrique1/index.html">Rubrique 1</a>
+            <a href="?action=sign-in">Login</a>
         </div>
 
         <div class="rubrique">
