@@ -29,8 +29,8 @@ class SigninAction extends Action
             }
             else{
                 Auth::loadProfile($user);
-                $url="acceil.html";
-                return "<meta http-equiv='refresh' content='url=$url'>";
+                $url="http://localhost:63342/NetVOD/acceuil.html";
+                return "<meta http-equiv='refresh' content='0.5;url=$url'>";
             }
         }else{
             return "inaccessible.";
