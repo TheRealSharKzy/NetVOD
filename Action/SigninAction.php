@@ -2,8 +2,6 @@
 
 namespace Action;
 
-require_once 'User.php';
-
 use Auth\Auth;
 
 class SigninAction extends Action

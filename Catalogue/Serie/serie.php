@@ -1,7 +1,10 @@
 <?php
 
 namespace Catalogue\Serie;
+
+use Catalogue\Episode\episode;
 use DB\ConnectionFactory;
+use PDO;
 
 require_once 'DB/ConnectionFactory.php';
 require_once 'Catalogue/Episode/episode.php';
@@ -35,6 +38,15 @@ class serie
         }
 
         $this->nbEpisodes = count($this->episodes);
+    }
+
+    public function getEpById(int $id) : ?episode{
+        foreach($this->episodes as $key=>$val){
+            if ($val->id == $id){
+                return $val;
+            }
+        }
+        return null;
     }
 
 

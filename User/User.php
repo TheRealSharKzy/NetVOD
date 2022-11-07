@@ -2,8 +2,6 @@
 
 namespace User;
 
-require_once 'Exception/InvalideProperty.php';
-
 use Exception\InvalideProperty;
 use list\ListePreference;
 

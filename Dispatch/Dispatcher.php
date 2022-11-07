@@ -2,6 +2,7 @@
 
 namespace Dispatch;
 
+use Action\EpisodeAction;
 use Action\InscriptAction;
 use Action\SigninAction;
 
@@ -16,6 +17,7 @@ class Dispatcher
             switch ($action){
                 case "inscript":$ac=new InscriptAction();break;
                 case "sign-in":$ac=new SigninAction();break;
+                case "episode":$ac=new EpisodeAction($_SESSION['serie']->getEpById($_GET['id']));break;
                 default:return;
             }
 
