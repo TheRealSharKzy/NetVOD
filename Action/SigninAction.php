@@ -29,8 +29,8 @@ class SigninAction extends Action
             }
             else{
                 Auth::loadProfile($user);
-                $action="?action=Acceuil";
-                return "<meta http-equiv='refresh' content='url=$action'>";
+                $url="acceil.html";
+                return "<meta http-equiv='refresh' content='url=$url'>";
             }
         }else{
             return "inaccessible.";
