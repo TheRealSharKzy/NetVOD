@@ -9,14 +9,30 @@ class SigninAction extends Action
 
     public function execute(): string
     {
-        // TODO: Implement execute() method.
         $page="<form method='post'>
+          <table>
+            <tr>
+                <th><label>Email:</label></th>
+</tr>
+          
+</table>
+        
           <label>Email:</label>
           <input type=\"email\" name=\"email\" required><br><br>
           <label>mod de passe:</label>
           <input type=\"password\" name=\"password\" required><br><br>
           <button type=\"submit\">Sign in</button>
-          </form>";
+          </form>
+        
+          <style>
+          form {
+          display: inline-block;
+          text-align: left;
+          }
+          
+</style>
+        
+        ";
         if($this->http_method=='GET'){
             return $page;
         }elseif($this->http_method=='POST'){

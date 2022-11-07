@@ -1,6 +1,7 @@
 <?php
 
 namespace Catalogue\list;
+
 class ListePreference
 {
     private $liste;

@@ -30,15 +30,6 @@ main section * {
     margin: 0.5em;
 }
 
-.bLink {
-    background-color:rgb(241, 204, 187);
-    border: 2px solid darksalmon;
-    padding: 2px;
-    text-decoration: none;
-    color:black;
-    border-radius:5px;
-}
-
 nav{
     border:3px solid black;
     border-radius: 0 0 20px 20px;
@@ -51,10 +42,6 @@ nav{
 
 }
 
-.sous{
-    display: none;
-}
-
 nav a{
     font-weight:bold;
     text-decoration: none;
@@ -65,17 +52,11 @@ a:hover{
     opacity: 0.5;
 }
 
-.rubrique:hover .sous{
-    font-size: 1.5vw;;
-    display:flex;
-    flex-direction: column;
-}
-
 main {
     width:100%;
-    max-width: 1000px;
-    margin:auto;
-    margin-bottom:1em;
+    max-width: 1100px;
+    margin: auto auto 1em;
+    padding: 10px 0 0 0;
 }
 
 h2 {

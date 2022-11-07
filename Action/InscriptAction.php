@@ -9,7 +9,7 @@ class InscriptAction extends Action
 
     public function execute(): string
     {
-        // TODO: Implement execute() method.
+
         $page="<form method='post'>
 pseudo: <input type='text' name='pseudo' required>
 email: <input type='email' name='email' required>
