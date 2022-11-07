@@ -1,5 +1,8 @@
 <?php
 
+namespace list;
+use serie;
+
 class ListePreference
 {
     private $liste;
@@ -38,10 +41,8 @@ class ListePreference
     public function getSeriesByNom($nom)
     {
         $liste = new ListePreference();
-        foreach ($this->liste as $serie)
-        {
-            if (strpos($serie->getNom(), $nom) !== false)
-            {
+        foreach ($this->liste as $serie) {
+            if (strpos($serie->getNom(), $nom) !== false) {
                 $liste->ajouter($serie);
             }
         }
