@@ -23,17 +23,19 @@ class serie
         $this->getEpSerie();
     }
 
-    public function getEpSerie(){
+    public function getEpSerie()
+    {
         $bdd = ConnectionFactory::makeConnection();
         $res = $bdd->query("select * from episode inner join serie on episode.serie_id = serie.id where serie.id = $this->id");
         $res->execute();
 
-        while ($res->fetch(PDO::FETCH_ASSOC)){
-            $this->episodes[] = new episode($res['titre'],$res['file'],$res['numero'],$res['duree']);
+        while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
+            $this->episodes[] = new episode($row['titre'], $row['file'], $row['numero'], $row['duree'], $row['resume']);
         }
 
         $this->nbEpisodes = count($this->episodes);
     }
+
 
 
 }
