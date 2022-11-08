@@ -58,7 +58,7 @@ class SigninAction extends Action
             }
             else{
                 Auth::loadProfile($user);
-                $url="http://localhost:63342/NetVOD/acceuil.html";
+                $url="http://localhost:63342/NetVOD/index.php";
                 return "<meta http-equiv='refresh' content='0.5;url=$url'>";
             }
         }else{

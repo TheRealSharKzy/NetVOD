@@ -4,6 +4,7 @@ namespace Dispatch;
 
 use Action\EpisodeAction;
 use Action\InscriptAction;
+use Action\ResetPassword;
 use Action\SigninAction;
 
 class Dispatcher
@@ -19,6 +20,7 @@ class Dispatcher
                 case "inscript":$ac=new InscriptAction();break;
                 case "sign-in":$ac=new SigninAction();break;
                 case "episode":$ac=new EpisodeAction($_SESSION['serie']->getEpById($_GET['id']));break;
+                case "reset-password":$ac=new ResetPassword();break;
                 default:return;
             }
 

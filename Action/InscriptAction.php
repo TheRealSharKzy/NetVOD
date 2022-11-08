@@ -38,7 +38,7 @@ class InscriptAction extends Action
             return $page;
         }elseif ($this->http_method=='POST'){
             if($_POST['password']==$_POST['password2']){
-                if(true){
+                if(Auth::checkPasswordStrength($_POST['password'])){
                     if(Auth::register($_POST['email'],$_POST['password'],$_POST['pseudo'])){
                         $url="http://localhost:63342/NetVOD/index.php?action=sign-in";
                         return "<meta http-equiv='refresh' content='0.5;url=$url'>";

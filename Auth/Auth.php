@@ -2,11 +2,8 @@
 
 namespace Auth;
 
-require_once 'User.php';
-
 use DB\ConnectionFactory;
-use User;
-use PDO;
+use User\User;
 
 class Auth
 {
@@ -39,12 +36,6 @@ class Auth
 
     public static function checkPasswordStrength(string $pass,
                                    int $minimumLength=6): bool {
-        $length = (strlen($pass) < $minimumLength); // longueur minimale
-        $digit = preg_match("#[\d]#", $pass); // au moins un digit
-        $special = preg_match("#[\W]#", $pass); // au moins un car. spécial
-        $lower = preg_match("#[a-z]#", $pass); // au moins une minuscule
-        $upper = preg_match("#[A-Z]#", $pass); // au moins une majuscule
-        if (!$length || !$digit || !$special || !$lower || !$upper)return false;
-        return true;
+        return strlen($pass)>=$minimumLength;
     }
 }

@@ -9,8 +9,14 @@ require './vendor/autoload.php';
 
 ConnectionFactory::setConfig("config.ini");
 
-$dispatcher = new Dispatcher();
-$dispatcher->run();
+try{
+    $dispatcher = new Dispatcher();
+    $dispatcher->run();
+}catch (Exception $exception){
+    echo $exception->getTraceAsString()."<br>".$exception->getMessage();
+}catch (Error $error){
+    echo $error->getTraceAsString()."<br>".$error->getMessage();
+}
 
 
 
