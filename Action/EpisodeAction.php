@@ -2,7 +2,6 @@
 
 namespace Action;
 
-use Auth\Auth;
 use Catalogue\Episode\episode;
 use DB\ConnectionFactory;
 
@@ -18,11 +17,11 @@ class EpisodeAction extends Action
     public function execute(): string
     {
         $html = "<div class='info'>
-                 <br> " . $this->ep->nom . "</br>
+                 <h1 id='title'> " . $this->ep->nom . "</h1>
                  <video controls='' width='900'>
-                 <source src=' ". $this->ep->url . "' type='video/mp4'>
+                 <source src='video/{$this->ep->url}' type='video/mp4'>
                  </video>
-                 <br class='epi'> " . $this->ep->duree . "<br>
+                 <br class='epi'> durée : " . $this->ep->duree . "s<br>
                  <br class='epi'> " . $this->ep->resume . "</br>
                  </div>
                  
@@ -35,7 +34,7 @@ class EpisodeAction extends Action
                  
                  <style>
                     
-                    body{
+                    section{
                       color: white;
                       background-color: black;
                     }
@@ -65,15 +64,21 @@ class EpisodeAction extends Action
                     }
                     
                     .title{
+                        text-align: left;
                         color: red;
-                        font-family: cursive;                                            
+                        font-family: cursive;  
+                        font-size: 40px;                                          
                     }
                     
                     #note{
                         width: 50px;
+                        height: 25px;
                     }
                                       
-                 
+                    #title{
+                        font-size: 50px;                      
+                    }
+                                      
                  </style>
                ";
 

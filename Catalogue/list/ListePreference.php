@@ -14,10 +14,12 @@ class ListePreference
         $this->liste = array();
     }
 
-    // Ajoute une série à la liste
+    // Ajoute une série à la liste de préférence si elle n'y est pas déjà
     public function ajouterSerie(serie $serie)
     {
-        $this->liste[] = $serie;
+        if (!$this->SerieDejaPresenteDansListe($serie)) {
+            $this->liste[] = $serie;
+        }
     }
 
     // Retourne la liste des séries
@@ -48,6 +50,17 @@ class ListePreference
             }
         }
         return $liste;
+    }
+
+    // Retourne true si la série $serie est dans la liste
+    public function SerieDejaPresenteDansListe(serie $serie) : bool
+    {
+        foreach ($this->liste as $serieListe) {
+            if ($serieListe->getId() == $serie->getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
