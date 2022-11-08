@@ -21,6 +21,7 @@ class episode
 
     public static function getEpById(int $id) : episode{
         $res = ConnectionFactory::makeConnection()->query("select * from episode where id = $id");
+        $res->execute();
         $row = $res->fetch(\PDO::FETCH_ASSOC);
         return new episode($row['titre'],$row['file'],$row['numero'],$row['duree'],$row['resume']);
     }
