@@ -28,6 +28,7 @@ class SigninAction extends Action
           </table>
         
           </form>
+          <a href='?action=reset-password'>forget password ?</a>
         
           <style>
          

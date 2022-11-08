@@ -20,7 +20,11 @@ password: <input type='password' name='password'> password egain: <input type='p
         // TODO: Implement execute() method.
         if($this->http_method=='GET'){
             if(isset($_GET['token'])){
-                return ResetPassword::$pagePassword;
+                if(Auth::authenticateToken($_GET['token'])){
+                    return ResetPassword::$pagePassword;
+                }else{
+                    return "the token is expired";
+                }
             }else{
                 return ResetPassword::$pageEmail;
             }
@@ -29,16 +33,11 @@ password: <input type='password' name='password'> password egain: <input type='p
             if(isset($_GET['token'])){
                 if($_POST['password']==$_POST['password2']){
                     if(Auth::checkPasswordStrength($_POST['password'])){
-                        $dateexpires=ConnectionFactory::makeConnection()->query("select dateexpires from token where tok='".$_GET['token']."'")->fetch()[0];
-                        if(time()<=$dateexpires){
-                            $hash = password_hash($_POST['password'], PASSWORD_DEFAULT, ['cost'=>12]);
-                            $id=ConnectionFactory::makeConnection()->query("select id from token where tok='".$_GET['token']."'")->fetch()[0];
-                            ConnectionFactory::makeConnection()->exec("update utilisateur set PASSWORD = '$hash' where id = $id");
+                        $hash = password_hash($_POST['password'], PASSWORD_DEFAULT, ['cost'=>12]);
+                        $id=ConnectionFactory::makeConnection()->query("select id from token where tok='".$_GET['token']."'")->fetch()[0];
+                        ConnectionFactory::makeConnection()->exec("update utilisateur set PASSWORD = '$hash' where id = $id");
 
-                            return "resussi.";
-                        }else{
-                            return "the token is expired";
-                        }
+                        return "resussi.";
                     }else{
                         return "password is not forma.<br><br>".ResetPassword::$pagePassword;
                     }
@@ -48,11 +47,7 @@ password: <input type='password' name='password'> password egain: <input type='p
             }else{
                 $query=ConnectionFactory::makeConnection()->query("select id from utilisateur where email='".$email."'");
                 if($query->rowCount()>0){
-                    $tok=bin2hex(random_bytes(32));
-                    $dateexpires=time()+24*60*60;
-                    $id=$query->fetch()[0];
-                    ConnectionFactory::makeConnection()->exec("insert into token values ($id,'$tok',$dateexpires)");
-                    //return "<a href='$this->hostname$this->script_name?action=reset-password&token=$tok'>RESETTTT</a>";
+                    $tok=Auth::actualiseToken($email);
                     return "$this->hostname$this->script_name?action=reset-password&token=$tok";
                 }else{
                     return "this email is not inscrited.<br><br>".ResetPassword::$pageEmail;
