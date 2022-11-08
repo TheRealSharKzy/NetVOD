@@ -25,6 +25,8 @@ class EpisodeAction extends Action
                  <br class='epi'> " . $this->ep->resume . "</br>
                  </div>
                  
+                 <button class='button b1'>Ajouter à la liste des Préférences</button>
+                 
                  <h1 class='title'>Commente la série</h1>
                  <form method='post'>
                  <input id='note' class='form' type='number' value='note' placeholder='Note de la série' min='0' max='5'>
@@ -77,6 +79,27 @@ class EpisodeAction extends Action
                                       
                     #title{
                         font-size: 50px;                      
+                    }
+                    
+                    .b1:hover {
+                        background-color: #FFFFFF;
+                        font-size: 1.8em;
+                        padding: 2%;
+                        color : #00F3FF;
+                        border-radius: 1.2em;
+                        border: solid;
+                        border-color : #00F3FF;
+                        transition-duration: 0.4s;
+                    }
+
+                    .b1 {
+                        background-color: #00F3FF;
+                        font-size: 1.8em;
+                        padding: 2%;
+                        color : #FFFFFF;
+                        border-radius: 1.2em;
+                        border: solid;
+                        transition-duration: 0.4s;
                     }
                                       
                  </style>
