@@ -17,7 +17,7 @@ class SigninAction extends Action
                     <td><input type=\"email\" name=\"email\" required></td>
                 </tr>
                 <tr>
-                    <th><label>mod de passe:</label></th>
+                    <th><label>mot de passe:</label></th>
                     <td> <input type=\"password\" name=\"password\" required></td>
                 </tr>
                 <tr>
@@ -59,8 +59,9 @@ class SigninAction extends Action
             }
             else{
                 Auth::loadProfile($user);
-                $url="http://localhost:63342/NetVOD/index.php";
-                return "<meta http-equiv='refresh' content='0.5;url=$url'>";
+                //$url="http://localhost:63342/NetVOD/acceuil.html";
+                //return "<meta http-equiv='refresh' content='0.5;url=$url'>";
+                return 'Vous êtes connecté';
             }
         }else{
             return "inaccessible.";
