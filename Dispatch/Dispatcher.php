@@ -6,6 +6,7 @@ use Action\EpisodeAction;
 use Action\InscriptAction;
 use Action\ResetPassword;
 use Action\SigninAction;
+use Catalogue\Episode\episode;
 
 class Dispatcher
 {
@@ -19,7 +20,7 @@ class Dispatcher
             switch ($action){
                 case "inscript":$ac=new InscriptAction();break;
                 case "sign-in":$ac=new SigninAction();break;
-                case "episode":$ac=new EpisodeAction($_SESSION['serie']->getEpById($_GET['id']));break;
+                case "episode":$ac=new EpisodeAction(episode::getEpById($_GET['id']));break;
                 case "reset-password":$ac=new ResetPassword();break;
                 default:return;
             }

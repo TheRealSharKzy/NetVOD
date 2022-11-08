@@ -2,6 +2,7 @@
 
 namespace Catalogue\Episode;
 
+use DB\ConnectionFactory;
 use Exception\InvalideProperty;
 
 class episode
@@ -16,6 +17,12 @@ class episode
         $this->numero = $numero;
         $this->duree = $duree;
         $this->resume = $res;
+    }
+
+    public static function getEpById(int $id) : episode{
+        $res = ConnectionFactory::makeConnection()->query("select * from episode where id = $id");
+        $row = $res->fetch(\PDO::FETCH_ASSOC);
+        return new episode($row['titre'],$row['file'],$row['numero'],$row['duree'],$row['resume']);
     }
 
     public function __get($name)
