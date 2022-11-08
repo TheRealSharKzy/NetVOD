@@ -51,14 +51,15 @@ class SigninAction extends Action
         if($this->http_method=='GET'){
             return $page;
         }elseif($this->http_method=='POST'){
-            $user=Auth::authenticate($_POST['email'],$_POST['password']);
+            $email=filter_var($_POST['email'],FILTER_SANITIZE_STRING);
+            $user=Auth::authenticate($email,$_POST['password']);
             if($user==null){
                 $page="your email or password is incorrect.<br><br>".$page;
                 return $page;
             }
             else{
                 Auth::loadProfile($user);
-                $url="http://localhost:63342/NetVOD/acceuil.html";
+                $url="http://localhost:63342/NetVOD/index.php";
                 return "<meta http-equiv='refresh' content='0.5;url=$url'>";
             }
         }else{
