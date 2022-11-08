@@ -7,7 +7,7 @@ use DB\ConnectionFactory;
 use PDO;
 
 require_once 'DB/ConnectionFactory.php';
-require_once 'Catalogue/Episode/episode.php';
+require_once 'Catalogue/Episode/Episode.php';
 
 
 class serie

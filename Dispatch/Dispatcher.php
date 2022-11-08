@@ -4,6 +4,7 @@ namespace Dispatch;
 
 use Action\EpisodeAction;
 use Action\InscriptAction;
+use Action\SerieListEpisodeAction;
 use Action\SigninAction;
 
 class Dispatcher
@@ -12,13 +13,14 @@ class Dispatcher
 
         $action = $_GET['action'] ?? null;
 
+//      if(!is_null($action) && isset($_SESSION['user'])){
         if(!is_null($action)){
-
 
             switch ($action){
                 case "inscript":$ac=new InscriptAction();break;
                 case "sign-in":$ac=new SigninAction();break;
                 case "episode":$ac=new EpisodeAction($_SESSION['serie']->getEpById($_GET['id']));break;
+                case "SerieListEpisode":$ac=new SerieListEpisodeAction();break;
                 default:return;
             }
 
@@ -54,7 +56,7 @@ class Dispatcher
         </div>
 
         <div class="rubrique">
-            <a href="html/rubrique2/index.html">Rubrique 2</a>
+            <a href="?action=SerieListEpisode">afficher Detaill</a>
         </div>
 
         <div class="rubrique">

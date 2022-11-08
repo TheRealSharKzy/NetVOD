@@ -2,6 +2,8 @@
 
 namespace Catalogue\list;
 
+use Catalogue\Serie\serie;
+
 class ListePreference
 {
     private $liste;
