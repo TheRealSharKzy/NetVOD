@@ -11,34 +11,41 @@ class SigninAction extends Action
     {
         $page="<form method='post'>
           <table>
-            <tr>
-                <th><label>Email:</label></th>
-</tr>
-          
-</table>
+              <tbody>
+                <tr>
+                    <th><label>Email:</label></th>
+                    <td><input type=\"email\" name=\"email\" required></td>
+                </tr>
+                <tr>
+                    <th><label>mod de passe:</label></th>
+                    <td> <input type=\"password\" name=\"password\" required></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td><button type=\"submit\">Sign in</button></td>
+                </tr>
+              </tbody>
+          </table>
         
-          <div><label>Email:</label><input type=\"email\" name=\"email\" required></div>
-          <div><label>mod de passe:</label><input type=\"password\" name=\"password\" required></div>
-          <button type=\"submit\">Sign in</button>
           </form>
         
           <style>
-          
-          
-          div{
-            display: flex;
-        }
-               
-        input, label {
-            text-align: left; 
-            display: block;
-         }
-          
-        form{
-            display: inline-block;
-        } 
-      
-</style>
+         
+            button{
+                width: 100px;
+                display:inline-block;
+            }         
+         
+            table{
+                display:inline-block;
+                text-align: left;
+            }
+            
+            th,td{
+                padding-bottom: 20px; 
+            }
+            
+          </style>
         
         ";
         if($this->http_method=='GET'){
