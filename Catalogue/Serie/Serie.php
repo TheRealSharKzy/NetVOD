@@ -49,6 +49,10 @@ class serie
         return null;
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
 
 
 }
