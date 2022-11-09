@@ -50,6 +50,13 @@ class Dispatcher
     }
 
     public function renderPage(string $html){
+        $rubrique ='';
+        if (isset($_SESSION['user'])){
+            $rubrique= '<div class="rubrique">
+            <a href="?action=SerieListEpisode">Liste episodes</a>
+        </div>';
+        }
+
         echo <<<END
 
 <!DOCTYPE html>
@@ -71,16 +78,7 @@ class Dispatcher
         <div class="rubrique">
             <a href="?action=sign-in">Login</a>
         </div>
-
-        <div class="rubrique">
-            <a href="?action=SerieListEpisode">afficher Detaill</a>
-        </div>
-
-        <div class="rubrique">
-            <a href="html/rubrique3/index.html">Rubrique 3</a>
-        </div>
-
-        <a href="html/A_propos.html">A propos</a>
+        $rubrique
     </nav>
 
     <main>
