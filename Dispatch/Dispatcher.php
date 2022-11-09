@@ -5,11 +5,13 @@ namespace Dispatch;
 use Action\ActiviteAction;
 use Action\EpisodeAction;
 use Action\InscriptAction;
+use Action\ListEnCoursAction;
 use Action\SerieListEpisodeAction;
 use Action\ResetPassword;
 use Action\ShowCatalogueAction;
 use Action\SigninAction;
 use Catalogue\Episode\Episode;
+use DB\ConnectionFactory;
 
 class Dispatcher
 {
@@ -28,10 +30,14 @@ class Dispatcher
                     $ac = new SerieListEpisodeAction();
                     break;
                 case "episode":
+                    ListEnCoursAction::ajoutEnCours($_GET['id'],unserialize($_SESSION['user'])->id);
                     $ac = new EpisodeAction(episode::getEpById($_GET['id']));
                     break;
                 case "reset-password":
                     $ac = new ResetPassword();
+                    break;
+                case "ListEnCours":
+                    $ac = new ListEnCoursAction();
                     break;
                 case "show-catalogue":
                     $ac = new ShowCatalogueAction();
