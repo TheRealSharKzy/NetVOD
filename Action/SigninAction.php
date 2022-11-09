@@ -55,7 +55,7 @@ class SigninAction extends Action
             return $page;
         } elseif ($this->http_method == 'POST') {
             if (isset($_POST['login'])) {
-                $email = filter_var($_POST['email'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
                 $user = Auth::authenticate($email, $_POST['password']);
                 if ($user == null) {
                     $page = "your email or password is incorrect.<br><br>" . $page;

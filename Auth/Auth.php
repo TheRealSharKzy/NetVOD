@@ -12,6 +12,7 @@ class Auth
         $query=ConnectionFactory::makeConnection()->query($sql);
         $row=$query->fetch();
         $hash=$row[2];
+        echo password_verify($passwdCheck,$hash)."<br>";
         if(password_verify($passwdCheck,$hash)){
             return new User($row[0],$row[3],$row[1]);
         }
