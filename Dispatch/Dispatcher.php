@@ -30,28 +30,40 @@ class Dispatcher
                     $ac = new SigninAction();
                     break;
                 case "SerieListEpisode":
-                    $ac = new SerieListEpisodeAction();
+                    if (isset($_SESSION['user'])) {
+                        $ac = new SerieListEpisodeAction();
+                    } else {
+                        $ac = new SigninAction();
+                    }
                     break;
                 case "episode":
                     ListEnCoursAction::ajoutEnCours($_GET['id'],unserialize($_SESSION['user'])->id);
-                    $ac = new EpisodeAction(episode::getEpById($_GET['id']));
+                    if (isset($_SESSION['user'])) {
+                        $ac = new EpisodeAction(episode::getEpById($_GET['id']));
+                    } else {
+                        $ac = new SigninAction();
+                    }
                     break;
                 case "reset-password":
                     $ac = new ResetPassword();
                     break;
                 case "ListEnCours":
-                    $ac = new ListEnCoursAction();
+                    if (isset($_SESSION['user'])) {
+                        $ac = new ListEnCoursAction();
+                    } else {
+                        $ac = new SigninAction();
+                    }
                     break;
                 case "show-catalogue":
-                    $ac = new ShowCatalogueAction();
+                    if (isset($_SESSION['user'])) {
+                        $ac = new ShowCatalogueAction();
+                    } else {
+                        $ac = new SigninAction();
+                    }
                     break;
                 case "active":
                     $ac=new ActiveAction();
                     break;
-                case "disconnect":
-                    unset($_SESSION['user']);
-
-                    $ac = new SigninAction();
                 default:
             }
         }else{
@@ -65,8 +77,7 @@ class Dispatcher
     public function renderPage(string $html){
         $rubrique ='';
         if (isset($_SESSION['user'])){
-            $rubrique= "
-            <a href='?action=show-catalogue'>Catalogue</a>
+            $rubrique= "<a href='?action=show-catalogue'>Catalogue</a>
             <a href='?action=sign-in'>Disconnect</a>";
         } else {
             $rubrique = "<a href='?action=inscript'>Register</a>                       

@@ -23,10 +23,7 @@ class SigninAction extends Action
                 <tr>
                     <th></th>
                     <td><button type=\"submit\" name='login'>Sign in</button></td>  
-                    </form>      
-                    <form method='post'>          
-                    <td><button type=\"submit\" >Disconnect</button></td> 
-                    </form> 
+                    </form>                          
                 </tr>
               </tbody>
           </table>                        
@@ -54,7 +51,6 @@ class SigninAction extends Action
         if ($this->http_method == 'GET') {
             return $page;
         } elseif ($this->http_method == 'POST') {//si un client a fait entrer ses email et mot de passe
-            if (isset($_POST['login'])) {
                 $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
                 $user = Auth::authenticate($email, $_POST['password']);
                 if ($user == null) {//si l'email ou mot de passe ne marchent pas
@@ -71,10 +67,6 @@ class SigninAction extends Action
                         return "you have not activated this account.<br><a href='?action=active'>activate</a>";
                     }
                 }
-            } else {
-            unset($_SESSION['user']);
-            return 'Vous êtes déconnecté';
-        }
     } else{
             return "inaccessible.";
         }
