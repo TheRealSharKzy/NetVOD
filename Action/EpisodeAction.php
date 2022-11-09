@@ -18,7 +18,6 @@ class EpisodeAction extends Action
     }
 
 
-
     public function execute(): string
     {
         $html = "<div class='info'>
@@ -52,10 +51,10 @@ class EpisodeAction extends Action
                  </script>
                
                  <h1 class='title'>Commente la série</h1>
-                 <form method='post'>
+                 <form method='post' class='CommentForm'>
                  <input id='note' class='form' type='number' name='note' placeholder='Note de la série' min='0' max='5'>
                  <input id='comment' class='form' type='text' name='commentaire' placeholder='Commentaire'>      
-                 <button class='form' type='submit'>Valider</button>
+                 <button class='form' type='submit' name='commentButton'>Valider</button>
                  </form>
 
                  
@@ -85,7 +84,7 @@ class EpisodeAction extends Action
                         margin: 10px;                                                                         
                     }
                     
-                    form{
+                    .CommentForm{
                         border: 3px solid red;
                         padding: 10px;                        
                     }
@@ -127,29 +126,25 @@ class EpisodeAction extends Action
                         transition-duration: 0.4s;
                     }
                                       
-                 </style>
-                 
-               ';
+                 </style>                                
 
         ";
 
 
-
-
-
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $comment = ConnectionFactory::makeConnection()->prepare("select count(*) from Commentaires where email = ? and idSerie=?");
-            $user = unserialize($_SESSION['user']);
-            $idSerie = $_SESSION['idserie'];
-            $comment->bindParam(1, $user->email);
-            $comment->bindParam(2, $idSerie);
-            $comment->execute();
-            if ($comment->fetch()[0] != 0) {
-                $html .= "Vous avez déjà noté cette série";
-            } else {
-                ConnectionFactory::makeConnection()->exec("insert into Commentaires values ({$_SESSION['idserie']},'{$user->email}',{$_POST['note']},'{$_POST['commentaire']}')");
-                $html .= "Merci pour votre commentaire";
+        if (isset($_POST['commentButton'])) {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $comment = ConnectionFactory::makeConnection()->prepare("select count(*) from Commentaires where email = ? and idSerie=?");
+                $user = unserialize($_SESSION['user']);
+                $idSerie = $_SESSION['idserie'];
+                $comment->bindParam(1, $user->email);
+                $comment->bindParam(2, $idSerie);
+                $comment->execute();
+                if ($comment->fetch()[0] != 0) {
+                    $html .= "Vous avez déjà noté cette série";
+                } else {
+                    ConnectionFactory::makeConnection()->exec("insert into Commentaires values ({$_SESSION['idserie']},'{$user->email}',{$_POST['note']},'{$_POST['commentaire']}')");
+                    $html .= "Merci pour votre commentaire";
+                }
             }
         }
         return $html;
