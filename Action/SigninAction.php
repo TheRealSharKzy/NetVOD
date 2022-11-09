@@ -9,7 +9,7 @@ class SigninAction extends Action
 
     public function execute(): string
     {
-        $page="<table>
+        $page = "<table>
                 <tbody>
                <form method='post'>          
                 <tr>
@@ -51,27 +51,31 @@ class SigninAction extends Action
           </style>
         
         ";
-        if($this->http_method=='GET'){
+        if ($this->http_method == 'GET') {
             return $page;
-        }elseif($this->http_method=='POST'){
-            $email=filter_var($_POST['email'],FILTER_SANITIZE_STRING);
-            $user=Auth::authenticate($email,$_POST['password']);
-            if($user==null){
-                $page="your email or password is incorrect.<br><br>".$page;
-                return $page;
-            }
-            else{
-                if(Auth::getActive($email)){
-                    Auth::loadProfile($user);
-                    //$url="http://localhost:63342/NetVOD/acceuil.html";
-                    //return "<meta http-equiv='refresh' content='0.5;url=$url'>";
-                    return 'Vous êtes connecté';
-                }else{
-                    setcookie("user",$email);
-                    return "you have not activated this account.<br><a href='?action=active'>activate</a>";
+        } elseif ($this->http_method == 'POST') {
+            if (isset($_POST['login'])) {
+                $email = filter_var($_POST['email'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                $user = Auth::authenticate($email, $_POST['password']);
+                if ($user == null) {
+                    $page = "your email or password is incorrect.<br><br>" . $page;
+                    return $page;
+                } else {
+                    if (Auth::getActive($email)) {
+                        Auth::loadProfile($user);
+                        //$url="http://localhost:63342/NetVOD/acceuil.html";
+                        //return "<meta http-equiv='refresh' content='0.5;url=$url'>";
+                        return 'Vous êtes connecté';
+                    } else {
+                        setcookie("user", $email);
+                        return "you have not activated this account.<br><a href='?action=active'>activate</a>";
+                    }
                 }
-            }
-        }else{
+            } else {
+            unset($_SESSION['user']);
+            return 'Vous êtes déconnecté';
+        }
+    } else{
             return "inaccessible.";
         }
     }

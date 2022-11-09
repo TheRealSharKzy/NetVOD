@@ -9,6 +9,7 @@ class SerieListEpisodeAction extends Action
 
     public function execute() : string{
         $html = "";
+        $htmlComment = "";
         $_SESSION['idserie'] = $_GET['id'];
         if(isset($_GET['id'])){
             $id_serie = $_GET['id'];
@@ -25,6 +26,28 @@ class SerieListEpisodeAction extends Action
             return "Aucune Serie trouvee";
         }
 
+        $comment = $bdd->query("select email,note,commentaire from Commentaires where idSerie = {$_GET['id']}");
+        $comment->execute();
+
+        $nbRows = $bdd->query("select count(*) from Commentaires where idSerie = {$_GET['id']}");
+        $nbRows->execute();
+
+        while ($row = $comment->fetch()){
+            $htmlComment.= "<div class='comment'>
+                            <p>$row[0]</p>
+                           <p>Note : $row[1]</p>
+                           <p>Commentaire :</p>
+                           <p>$row[2]</p></div>";
+        }
+
+        if ($nbRows->fetch()[0]>0) {
+
+            $avgNote = $bdd->query("select avg(note) from Commentaires where idSerie = {$_GET['id']}");
+            $avgNote->execute();
+            $avgNote = round($avgNote->fetch()[0]);
+        } else {
+            $avgNote = "Pas de notes";
+        }
         $titre = $resultSet['titre'];
         $descriptif = $resultSet['descriptif'];
         $chemin_img_serie = $resultSet['img'];
@@ -58,6 +81,7 @@ class SerieListEpisodeAction extends Action
 
 
 
+
         $html .=<<<END
         <div>
              <img src = $chemin_img_serie alt="automne" width="50%" height="50%">
@@ -65,10 +89,14 @@ class SerieListEpisodeAction extends Action
              <h3>Descriptif: $descriptif</h3>
              <h3>Annee: $annee</h3>
              <h3>Date d'ajout: $date_ajout</h3>
+             <h3>Note moyenne: $avgNote</h3>
             
             $html_p1
              
         </div>
+        
+            $htmlComment
+        
 
         <style>
            
@@ -80,13 +108,16 @@ class SerieListEpisodeAction extends Action
             h3 {
                 text-align: left;
             }
+            
+            .comment{
+            padding: 10px;
+            border-top:2px solid black;
+            border-bottom:2px solid black;
+            text-align: left;           
+            }
         
         </style>
     END;
-
-
-
-
 
         return $html;
 
