@@ -25,7 +25,7 @@ class Auth
         if($query->rowCount()>0)return false;
         else{
             $hash = password_hash($pass, PASSWORD_DEFAULT, ['cost'=>12]);
-            $id=ConnectionFactory::makeConnection()->query("select * from utilisateur")->rowCount();
+            $id=ConnectionFactory::makeConnection()->query("select * from utilisateur")->rowCount()+1;
             $sql="insert into utilisateur values ($id,'$email','$hash','$pseudo',false)";
             ConnectionFactory::makeConnection()->exec($sql);
             return true ;
@@ -47,26 +47,28 @@ class Auth
         $id=$pdo->query("select id from utilisateur where email='$email'")->fetch()[0];
         $tok=bin2hex(random_bytes(32));
         $dateexpires=time()+24*60*60;
-
+        $hash=password_hash($tok, PASSWORD_DEFAULT, ['cost'=>12]);
         $sql="select * from token left join utilisateur on token.id=utilisateur.id where email='$email'";
         if($pdo->query($sql)->rowCount()==0){
-            $pdo->exec("insert into token values ($id,'$tok',$dateexpires)");
+            $pdo->exec("insert into token values ($id,'$hash',$dateexpires)");
         }else{
-            $pdo->exec("update token set tok='$tok', dateexpires=$dateexpires where id=$id");
+            $pdo->exec("update token set tok='$hash', dateexpires=$dateexpires where id=$id");
         }
 
         unset($pdo);
         return $tok;
     }
 
-    public static function authenticateToken($tokCheck):bool{
-        $sql="select dateexpires from token where tok='$tokCheck'";
+    public static function authenticateToken($tokCheck):int{
+        $sql="select * from token";
         $query=ConnectionFactory::makeConnection()->query($sql);
-        if($query->rowCount()==0)return false;
-        else{
-            $dateexpires=$query->fetch()[0];
-            return time()<=$dateexpires;
+        while ($row=$query->fetch()){
+            if(password_verify($tokCheck,$row[1])){
+                if(time()<=$row[2])return $row[0];
+                break;
+            }
         }
+        return 0;
     }
 
     public static function getActive(string $email):bool{

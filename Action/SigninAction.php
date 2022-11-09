@@ -54,8 +54,7 @@ class SigninAction extends Action
         if($this->http_method=='GET'){
             return $page;
         }elseif($this->http_method=='POST'){
-            if (isset($_POST['login'])){
-                $email=filter_var($_POST['email'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $email=filter_var($_POST['email'],FILTER_SANITIZE_STRING);
             $user=Auth::authenticate($email,$_POST['password']);
             if($user==null){
                 $page="your email or password is incorrect.<br><br>".$page;
@@ -66,19 +65,13 @@ class SigninAction extends Action
                     Auth::loadProfile($user);
                     //$url="http://localhost:63342/NetVOD/acceuil.html";
                     //return "<meta http-equiv='refresh' content='0.5;url=$url'>";
-
+                    return 'Vous êtes connecté';
                 }else{
                     setcookie("user",$email);
                     return "you have not activated this account.<br><a href='?action=active'>activate</a>";
                 }
-                    return "you have not activated this account.<br><a href='?action=activite'>activate</a>";
-                }*/
             }
-            } else {
-                unset($_SESSION['user']);
-                return 'Vous êtes déconnecté';
-            }
-        } else{
+        }else{
             return "inaccessible.";
         }
     }

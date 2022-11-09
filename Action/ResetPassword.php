@@ -34,7 +34,7 @@ password: <input type='password' name='password'> password egain: <input type='p
                 if($_POST['password']==$_POST['password2']){
                     if(Auth::checkPasswordStrength($_POST['password'])){
                         $hash = password_hash($_POST['password'], PASSWORD_DEFAULT, ['cost'=>12]);
-                        $id=ConnectionFactory::makeConnection()->query("select id from token where tok='".$_GET['token']."'")->fetch()[0];
+                        $id=Auth::authenticateToken($_GET['token']);
                         ConnectionFactory::makeConnection()->exec("update utilisateur set PASSWORD = '$hash' where id = $id");
 
                         $url="http://localhost:63342/NetVOD/index.php?action=sign-in";
