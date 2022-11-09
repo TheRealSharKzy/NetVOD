@@ -106,7 +106,7 @@ class EpisodeAction extends Action
                         font-size: 50px;                      
                     }
                     
-                    .b1:hover {
+                    #b1:hover {
                         background-color: #FFFFFF;
                         font-size: 1.8em;
                         padding: 2%;
@@ -117,7 +117,7 @@ class EpisodeAction extends Action
                         transition-duration: 0.4s;
                     }
 
-                    .b1 {
+                    #b1 {
                         background-color: #00F3FF;
                         font-size: 1.8em;
                         padding: 2%;
