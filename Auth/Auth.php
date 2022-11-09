@@ -69,13 +69,13 @@ class Auth
         }
     }
 
-    public static function getActivite(string $email):bool{
-        $sql="select activite from utilisateur where email='$email'";
+    public static function getActive(string $email):bool{
+        $sql="select active from utilisateur where email='$email'";
         return ConnectionFactory::makeConnection()->query($sql)->fetch()[0];
     }
 
-    public static function setActivite(string $email,bool $activite){
-        $sql="update utilisateur set activite=$activite where email='$email'";
+    public static function setActive(string $email, bool $active){
+        $sql="update utilisateur set active=$active where email='$email'";
         ConnectionFactory::makeConnection()->exec($sql);
     }
 

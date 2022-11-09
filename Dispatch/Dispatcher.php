@@ -2,7 +2,7 @@
 
 namespace Dispatch;
 
-use Action\ActiviteAction;
+use Action\ActiveAction;
 use Action\EpisodeAction;
 use Action\InscriptAction;
 use Action\SerieListEpisodeAction;
@@ -36,8 +36,8 @@ class Dispatcher
                 case "show-catalogue":
                     $ac = new ShowCatalogueAction();
                     break;
-                case "activite":
-                    $ac=new ActiviteAction();
+                case "active":
+                    $ac=new ActiveAction();
                     break;
                 default:
                     return;

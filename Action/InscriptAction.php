@@ -43,7 +43,7 @@ class InscriptAction extends Action
                 if(Auth::checkPasswordStrength($_POST['password'])){
                     if(Auth::register($email,$_POST['password'],$pseudo)){
                         setcookie("user",$email);
-                        $url="http://localhost:63342/NetVOD/index.php?action=activite";
+                        $url="http://localhost:63342/NetVOD/index.php?action=active";
                         return "<meta http-equiv='refresh' content='0.5;url=$url'>";
                     }else{
                         return "email exist.<br><br>".$page;

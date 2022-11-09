@@ -6,7 +6,7 @@ use Auth\Auth;
 use DB\ConnectionFactory;
 use User\User;
 
-class ActiviteAction extends Action
+class ActiveAction extends Action
 {
 
     public function execute(): string
@@ -16,7 +16,7 @@ class ActiviteAction extends Action
             $email=$_COOKIE['user'];
             if(isset($_GET['token'])){
                 if(Auth::authenticateToken($_GET['token'])){
-                    Auth::setActivite($email,true);
+                    Auth::setActive($email,true);
 
                     $sql="select * from utilisateur where email='$email'";
                     $row=ConnectionFactory::makeConnection()->query($sql)->fetch();
@@ -28,7 +28,7 @@ class ActiviteAction extends Action
                 }
             }else{
                 $tok=Auth::actualiseToken($email);
-                return "$this->hostname$this->script_name?action=activite&token=$tok";
+                return "$this->hostname$this->script_name?action=active&token=$tok";
             }
         }else{
             $url="http://localhost:63342/NetVOD/index.php?action=sign-in";
