@@ -13,7 +13,6 @@ use Catalogue\Episode\Episode;
 class Dispatcher
 {
     public function run(){
-
         $action = $_GET['action'] ?? null;
 
         if(!is_null($action)){
@@ -50,9 +49,9 @@ class Dispatcher
     public function renderPage(string $html){
         $rubrique ='';
         if (isset($_SESSION['user'])){
-            $rubrique= '<div class="rubrique">
-            <a href="?action=SerieListEpisode">Liste episodes</a>
-        </div>';
+            $rubrique= "<div class='rubrique'>
+            <a href='?action=show-catalogue'>Catalogue</a>
+        </div>";
         }
 
         echo <<<END
@@ -77,9 +76,6 @@ class Dispatcher
             <a href="?action=sign-in">Login</a>
         </div>
         
-        <div class="rubrique">
-            <a href="?action=show-catalogue">Catalogue</a>
-        </div>
         $rubrique
     </nav>
 
