@@ -26,4 +26,45 @@ class User
         else throw new InvalideProperty();
     }
 
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEnCours(): array
+    {
+        return $this->enCours;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return ListePreference
+     */
+    public function getListPref(): ListePreference
+    {
+        return $this->listPref;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPseudo(): string
+    {
+        return $this->pseudo;
+    }
+
+
 }

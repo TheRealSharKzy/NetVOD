@@ -4,15 +4,20 @@ namespace Action;
 
 use Catalogue\Episode\episode;
 use DB\ConnectionFactory;
+use User\User;
 
 class EpisodeAction extends Action
 {
     private episode $ep;
+    private bool $add;
 
     public function __construct(episode $e)
     {
         $this->ep = $e;
+        $this->add = $this->loadadd($e);
     }
+
+
 
     public function execute(): string
     {
@@ -24,15 +29,35 @@ class EpisodeAction extends Action
                  <br class='epi'> durée : " . $this->ep->duree . "s<br>
                  <br class='epi'> " . $this->ep->resume . "</br>
                  </div>
+              
+                 <form method='post'>
+                 createbutton();
+                 </form> 
                  
-                 <button class='button b1'>Ajouter à la liste des Préférences</button>
+                      
                  
+                 <script>
+                    function b1(){
+                        if (add){
+                            document.getElementById('b1').value = 'Retirer de la liste de préférences';
+                            add = true;
+                            button1();
+                        }
+                        else{
+                            document.getElementById('b1').value = 'Ajouter à la liste de préférences';
+                            add = false;
+                            button1();
+                        }
+                    }
+                 </script>
+               
                  <h1 class='title'>Commente la série</h1>
                  <form method='post'>
                  <input id='note' class='form' type='number' name='note' placeholder='Note de la série' min='0' max='5'>
                  <input id='comment' class='form' type='text' name='commentaire' placeholder='Commentaire'>      
                  <button class='form' type='submit'>Valider</button>
                  </form>
+
                  
                  <style>
                     
@@ -103,7 +128,15 @@ class EpisodeAction extends Action
                     }
                                       
                  </style>
-               ";
+                 
+               ';
+
+        ";
+
+
+
+
+
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $comment = ConnectionFactory::makeConnection()->prepare("select count(*) from Commentaires where email = ? and idSerie=?");
@@ -120,5 +153,40 @@ class EpisodeAction extends Action
             }
         }
         return $html;
+    }
+
+    function loadadd(episode $e){
+        $user = unserialize($_SESSION['user']);
+        $idSerie = $_SESSION['idserie'];
+        $add = ConnectionFactory::makeConnection()->prepare("select count(*) from ListePref where email = ? and idSerie=?");
+        $add->bindParam(1, $user->email);
+        $add->bindParam(2, $idSerie);
+        $add->execute();
+        if ($add->fetch()[0] != 0) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    function createbutton(){
+        if ($this->add){
+            return "<input type='submit' name='button1' id='b1' onclick='b1' value='Retirer de la liste de préférences'>";
+        }
+        else{
+            return "<input type='submit' name='button1' id='b1' onclick='b1' value='Ajouter à la liste de préférences'>";
+        }
+    }
+
+    function button1(){
+        $user = unserialize($_SESSION['user']);
+        $idSerie = $_SESSION['idserie'];
+        if ($this->add){
+            ConnectionFactory::makeConnection()->exec("delete from ListePref where email = '{$user->email}' and idSerie={$idSerie}");
+        }
+        else{
+            ConnectionFactory::makeConnection()->exec("insert into ListePref values ({$idSerie},'{$user->email}')");
+        }
     }
 }
