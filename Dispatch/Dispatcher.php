@@ -15,9 +15,7 @@ class Dispatcher
 
         $action = $_GET['action'] ?? null;
 
-//      if(!is_null($action) && isset($_SESSION['user'])){
         if(!is_null($action)){
-        try {
             switch ($action) {
                 case "inscript":
                     $ac = new InscriptAction();
@@ -37,10 +35,6 @@ class Dispatcher
                 default:
                     return;
             }
-        } catch(\Error $e){
-            echo $e->getTraceAsString()."<br>".$e->getMessage();
-        }
-
         }else{
             $ac=new SigninAction();
         }
@@ -94,15 +88,8 @@ class Dispatcher
         <p>07/11/2022</p>
         <p>SAE - Développer une application web sécurisée </p>
     </footer>
-    
-
-
-
 </body>
 </html>
-
-
-
 END;
 
     }

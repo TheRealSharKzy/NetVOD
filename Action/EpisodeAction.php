@@ -113,9 +113,7 @@ class EpisodeAction extends Action
             } else {
                 ConnectionFactory::makeConnection()->exec("insert into Commentaires values(" . $_SESSION['serie']->id . "," . $_SESSION['user']->email . "," . $_POST['note'] . "," . $_POST['commentaire'] . ")");
             }
-
         }
-
         return $html;
     }
 }

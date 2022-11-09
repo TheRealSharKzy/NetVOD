@@ -4,6 +4,7 @@ namespace Catalogue\Serie;
 
 use Catalogue\Episode\episode;
 use DB\ConnectionFactory;
+use Exception\InvalideProperty;
 use PDO;
 
 require_once 'DB/ConnectionFactory.php';
@@ -49,9 +50,10 @@ class serie
         return null;
     }
 
-    public function getId()
+    public function __get($name)
     {
-        return $this->id;
+        if(property_exists($this,$name))return $this->$name;
+        else throw new InvalideProperty();
     }
 
 
