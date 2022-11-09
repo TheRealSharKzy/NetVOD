@@ -11,14 +11,18 @@ class ShowCatalogueAction extends Action
 {
     private Serie $serie;
     public function execute(): string{
-        $page = "";
+        $page = "<form method='post'>
+<input type='text' name='find'><input type='submit' value='find'>
+</form>";
         $bdd = ConnectionFactory::makeConnection();
         $res = $bdd->query("select * from serie");
         $res->execute();
         while ($row = $res->fetch(\PDO::FETCH_ASSOC)) {
-            $page .= "<div class='serie'>
+            $titre=$row['titre'];
+            if($this->http_method=='GET'||($this->http_method=='POST'&&preg_match("#".strtolower($_POST['find'])."#", strtolower($titre)))){//si le requet est GET ou le mot de chercher est correspondant
+                $page .= "<div class='serie'>
                 <div class='serieDesc'>
-                    <h2>" . $row['titre'] . "</h2>
+                    <h2>" . $titre . "</h2>
                 </div>
                 <div class='serieImg'>
                 <a href='?action=SerieListEpisode&id=" . $row['id'] . "'>
@@ -26,6 +30,7 @@ class ShowCatalogueAction extends Action
                 </a>
                 </div>
             </div>";
+            }
         }
         return $page;
     }
