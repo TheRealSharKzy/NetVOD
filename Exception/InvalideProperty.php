@@ -2,6 +2,7 @@
 
 namespace Exception;
 
+//exception pour un parametre invalide
 class InvalideProperty extends \Exception
 {
     public function __toString()

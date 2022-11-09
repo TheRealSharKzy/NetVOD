@@ -7,18 +7,19 @@ use User\User;
 
 class Auth
 {
+    //verifier email et mot de pass sont correcte
     public static function authenticate(string $email,string $passwdCheck):User|null{
         $sql="select * from utilisateur where email='$email'";
         $query=ConnectionFactory::makeConnection()->query($sql);
         $row=$query->fetch();
         $hash=$row[2];
-        echo password_verify($passwdCheck,$hash)."<br>";
         if(password_verify($passwdCheck,$hash)){
             return new User($row[0],$row[3],$row[1]);
         }
         else return null;
     }
 
+    //verifier un email est inscri, si non, enregister un compte
     public static function register( string $email,
                                      string $pass,$pseudo):bool {
         $sql="select * from utilisateur where email='$email'";
@@ -33,15 +34,18 @@ class Auth
         }
     }
 
+    //stoker un client connaicté en courrant
     public static function loadProfile(User $user):void{
         $_SESSION['user'] = serialize($user);
     }
 
+    //verifier un mot de passe est asset long
     public static function checkPasswordStrength(string $pass,
                                    int $minimumLength=6): bool {
         return strlen($pass)>=$minimumLength;
     }
 
+    //actualiser un token d'un client
     public static function actualiseToken(string $email):string{
         $pdo=ConnectionFactory::makeConnection();
 
@@ -60,6 +64,7 @@ class Auth
         return $tok;
     }
 
+    //chercher un client qui correspondant un token, 0 si il n'appartient pas
     public static function authenticateToken($tokCheck):int{
         $sql="select * from token";
         $query=ConnectionFactory::makeConnection()->query($sql);
@@ -72,11 +77,13 @@ class Auth
         return 0;
     }
 
+    //considerer un client est activé
     public static function getActive(string $email):bool{
         $sql="select active from utilisateur where email='$email'";
         return ConnectionFactory::makeConnection()->query($sql)->fetch()[0];
     }
 
+    //motifier un client est activé
     public static function setActive(string $email, bool $active){
         $sql="update utilisateur set active=$active where email='$email'";
         ConnectionFactory::makeConnection()->exec($sql);
