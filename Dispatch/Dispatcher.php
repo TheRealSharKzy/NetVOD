@@ -7,18 +7,16 @@ use Action\EpisodeAction;
 use Action\InscriptAction;
 use Action\SerieListEpisodeAction;
 use Action\ResetPassword;
+use Action\ShowCatalogueAction;
 use Action\SigninAction;
 use Catalogue\Episode\Episode;
 
 class Dispatcher
 {
     public function run(){
-
         $action = $_GET['action'] ?? null;
 
-//      if(!is_null($action) && isset($_SESSION['user'])){
         if(!is_null($action)){
-        try {
             switch ($action) {
                 case "inscript":
                     $ac = new InscriptAction();
@@ -35,16 +33,15 @@ class Dispatcher
                 case "reset-password":
                     $ac = new ResetPassword();
                     break;
+                case "show-catalogue":
+                    $ac = new ShowCatalogueAction();
+                    break;
                 case "activite":
                     $ac=new ActiviteAction();
                     break;
                 default:
                     return;
             }
-        } catch(\Error $e){
-            echo $e->getTraceAsString()."<br>".$e->getMessage();
-        }
-
         }else{
             $ac=new SigninAction();
         }
@@ -54,6 +51,13 @@ class Dispatcher
     }
 
     public function renderPage(string $html){
+        $rubrique ='';
+        if (isset($_SESSION['user'])){
+            $rubrique= "<div class='rubrique'>
+            <a href='?action=show-catalogue'>Catalogue</a>
+        </div>";
+        }
+
         echo <<<END
 
 <!DOCTYPE html>
@@ -75,16 +79,8 @@ class Dispatcher
         <div class="rubrique">
             <a href="?action=sign-in">Login</a>
         </div>
-
-        <div class="rubrique">
-            <a href="?action=SerieListEpisode">afficher Detaill</a>
-        </div>
-
-        <div class="rubrique">
-            <a href="html/rubrique3/index.html">Rubrique 3</a>
-        </div>
-
-        <a href="html/A_propos.html">A propos</a>
+        
+        $rubrique
     </nav>
 
     <main>
@@ -100,15 +96,8 @@ class Dispatcher
         <p>07/11/2022</p>
         <p>SAE - Développer une application web sécurisée </p>
     </footer>
-    
-
-
-
 </body>
 </html>
-
-
-
 END;
 
     }

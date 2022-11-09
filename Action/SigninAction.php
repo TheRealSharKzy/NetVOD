@@ -9,9 +9,9 @@ class SigninAction extends Action
 
     public function execute(): string
     {
-        $page="<form method='post'>
-          <table>
-              <tbody>
+        $page="<table>
+                <tbody>
+               <form method='post'>          
                 <tr>
                     <th><label>Email:</label></th>
                     <td><input type=\"email\" name=\"email\" required></td>
@@ -22,12 +22,14 @@ class SigninAction extends Action
                 </tr>
                 <tr>
                     <th></th>
-                    <td><button type=\"submit\">Sign in</button></td>
+                    <td><button type=\"submit\" name='login'>Sign in</button></td>  
+                    </form>      
+                    <form method='post'>          
+                    <td><button type=\"submit\" >Disconnect</button></td> 
+                    </form> 
                 </tr>
               </tbody>
-          </table>
-        
-          </form>
+          </table>                        
           <a href='?action=reset-password'>forget password ?</a>
         
           <style>
