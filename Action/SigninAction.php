@@ -53,20 +53,20 @@ class SigninAction extends Action
         ";
         if ($this->http_method == 'GET') {
             return $page;
-        } elseif ($this->http_method == 'POST') {
+        } elseif ($this->http_method == 'POST') {//si un client a fait entrer ses email et mot de passe
             if (isset($_POST['login'])) {
                 $email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
                 $user = Auth::authenticate($email, $_POST['password']);
-                if ($user == null) {
+                if ($user == null) {//si l'email ou mot de passe ne marchent pas
                     $page = "your email or password is incorrect.<br><br>" . $page;
                     return $page;
                 } else {
-                    if (Auth::getActive($email)) {
+                    if (Auth::getActive($email)) {//si le compte est activé
+                        //connection passe
                         Auth::loadProfile($user);
-                        //$url="http://localhost:63342/NetVOD/acceuil.html";
-                        //return "<meta http-equiv='refresh' content='0.5;url=$url'>";
                         return 'Vous êtes connecté';
                     } else {
+                        //aller activer
                         setcookie("user", $email);
                         return "you have not activated this account.<br><a href='?action=active'>activate</a>";
                     }
