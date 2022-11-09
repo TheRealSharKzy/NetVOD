@@ -15,12 +15,17 @@ class ShowCatalogueAction extends Action
         $bdd = ConnectionFactory::makeConnection();
         $res = $bdd->query("select * from serie");
         $res->execute();
-        $series = [];
         while ($row = $res->fetch(\PDO::FETCH_ASSOC)) {
-            $series[] = new Serie($row['id'],$row['nom'],$row['urlImage'],$row['description'],$row['anneeSortie'],$row['dateAjout']);
-        }
-        foreach ($series as $s){
-            $page .= $s->nom;
+            $page .= "<div class='serie'>
+                <div class='serieDesc'>
+                    <h2>" . $row['titre'] . "</h2>
+                </div>
+                <div class='serieImg'>
+                <a href='?action=SerieListEpisode&id=" . $row['id'] . "'>
+                    <img src='" . $row['img'] . "' alt='' width='500' height='300'>
+                </a>
+                </div>
+            </div>";
         }
         return $page;
     }

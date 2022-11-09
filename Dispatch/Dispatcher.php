@@ -6,6 +6,7 @@ use Action\EpisodeAction;
 use Action\InscriptAction;
 use Action\SerieListEpisodeAction;
 use Action\ResetPassword;
+use Action\ShowCatalogueAction;
 use Action\SigninAction;
 use Catalogue\Episode\Episode;
 
@@ -31,6 +32,9 @@ class Dispatcher
                     break;
                 case "reset-password":
                     $ac = new ResetPassword();
+                    break;
+                case "show-catalogue":
+                    $ac = new ShowCatalogueAction();
                     break;
                 default:
                     return;
@@ -71,6 +75,10 @@ class Dispatcher
 
         <div class="rubrique">
             <a href="?action=sign-in">Login</a>
+        </div>
+        
+        <div class="rubrique">
+            <a href="?action=show-catalogue">Catalogue</a>
         </div>
         $rubrique
     </nav>
