@@ -105,13 +105,18 @@ class EpisodeAction extends Action
                  </style>
                ";
 
-        if ($_SERVER['REQUEST_METHOD']=='POST'){
-            $comment = ConnectionFactory::makeConnection()->query("select * from commentaire where email =" . $_SESSION['user']->email . " and idSerie=" . $_SESSION['serie']->id);
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $comment = ConnectionFactory::makeConnection()->prepare("select count(*) from Commentaires where email = ? and idSerie=?");
+            $mail = $_SESSION['user']->email;
+            $idSerie = $_SESSION['idserie'];
+            $comment->bindParam(1, $mail);
+            $comment->bindParam(2, $idSerie);
             $comment->execute();
-            if (count($comment->fetch()) != 0){
-                $html.= "Vous avez déjà noté cette série";
+            if ($comment->fetch()[0] != 0) {
+                $html .= "Vous avez déjà noté cette série";
             } else {
-                ConnectionFactory::makeConnection()->exec("insert into Commentaires values(" . $_SESSION['serie']->id . "," . $_SESSION['user']->email . "," . $_POST['note'] . "," . $_POST['commentaire'] . ")");
+                ConnectionFactory::makeConnection()->exec("insert into Commentaires values ({$_SESSION['idserie']},'{$_SESSION['user']->email}',{$_POST['note']},{$_POST['commentaire']})");
+                $html .= "Merci pour votre commentaire";
             }
         }
         return $html;
