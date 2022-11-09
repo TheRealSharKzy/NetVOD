@@ -40,7 +40,6 @@ class Dispatcher
                     $ac=new ActiviteAction();
                     break;
                 default:
-                    return;
             }
         }else{
             $ac=new SigninAction();

@@ -9,6 +9,7 @@ class SerieListEpisodeAction extends Action
 
     public function execute() : string{
         $html = "";
+        $_SESSION['idserie'] = $_GET['id'];
         if(isset($_GET['id'])){
             $id_serie = $_GET['id'];
         }else{
