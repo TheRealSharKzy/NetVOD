@@ -19,6 +19,9 @@ class ListEnCoursAction extends Action
         $resultSet_1->execute();
 
         $nb_serie = 0;
+        $height_LECA_1 = 75;
+        $estVide = true;
+
         while ($row_1 = $resultSet_1->fetch(\PDO::FETCH_ASSOC)) {
             $resultSet_2 = $bdd->query("select img,titre from serie where id = {$row_1['id_serie']}");
             $resultSet_2->execute();
@@ -26,9 +29,18 @@ class ListEnCoursAction extends Action
             $html .= "<div class='st'><a href='?action=SerieListEpisode&id={$row_1['id_serie']}'><img src={$row_2['img']} alt={$row_2['titre']}></a>";
             $html .= "<h3>{$row_2['titre']}</h3></div>";
             $nb_serie ++;
+            $estVide = false;
         }
 
-        $width = 255*$nb_serie;
+
+        if($estVide){
+            $width_LECA_2 = "400";
+            $html .= "<p>Il n'y a pas de série en cours de visonnage</p>";
+        }else{
+            $width_LECA_2 = 255*$nb_serie;
+            $height_LECA_1 = 275;
+
+        }
 
         $html .= <<<END
         </div>
@@ -36,14 +48,16 @@ class ListEnCoursAction extends Action
         </div>
         <style>      
             .LECA_1{
-                height: 270px;
+                height: {$height_LECA_1}px;
                 width:1000px;
                 overflow: auto;
             }
             
             .LECA_2{
-                border: 2px solid deepskyblue;
-                width: {$width}px;
+                background-color: antiquewhite;
+                border: 5px solid deepskyblue;
+                border-radius: 35px;
+                width: {$width_LECA_2}px;
             }
             
             .st{
