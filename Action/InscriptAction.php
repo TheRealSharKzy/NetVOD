@@ -42,7 +42,8 @@ class InscriptAction extends Action
             if($_POST['password']==$_POST['password2']){
                 if(Auth::checkPasswordStrength($_POST['password'])){
                     if(Auth::register($email,$_POST['password'],$pseudo)){
-                        $url="http://localhost:63342/NetVOD/index.php?action=sign-in";
+                        setcookie("user",$email);
+                        $url="http://localhost:63342/NetVOD/index.php?action=activite";
                         return "<meta http-equiv='refresh' content='0.5;url=$url'>";
                     }else{
                         return "email exist.<br><br>".$page;

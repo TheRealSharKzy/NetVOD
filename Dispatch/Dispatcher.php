@@ -2,6 +2,7 @@
 
 namespace Dispatch;
 
+use Action\ActiviteAction;
 use Action\EpisodeAction;
 use Action\InscriptAction;
 use Action\SerieListEpisodeAction;
@@ -33,6 +34,9 @@ class Dispatcher
                     break;
                 case "reset-password":
                     $ac = new ResetPassword();
+                    break;
+                case "activite":
+                    $ac=new ActiviteAction();
                     break;
                 default:
                     return;

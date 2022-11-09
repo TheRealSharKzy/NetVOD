@@ -37,7 +37,8 @@ password: <input type='password' name='password'> password egain: <input type='p
                         $id=ConnectionFactory::makeConnection()->query("select id from token where tok='".$_GET['token']."'")->fetch()[0];
                         ConnectionFactory::makeConnection()->exec("update utilisateur set PASSWORD = '$hash' where id = $id");
 
-                        return "resussi.";
+                        $url="http://localhost:63342/NetVOD/index.php?action=sign-in";
+                        return "<meta http-equiv='refresh' content='0.5;url=$url'>";
                     }else{
                         return "password is not forma.<br><br>".ResetPassword::$pagePassword;
                     }

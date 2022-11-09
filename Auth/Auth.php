@@ -26,7 +26,7 @@ class Auth
         else{
             $hash = password_hash($pass, PASSWORD_DEFAULT, ['cost'=>12]);
             $id=ConnectionFactory::makeConnection()->query("select * from utilisateur")->rowCount();
-            $sql="insert into utilisateur values ($id,'$email','$hash','$pseudo')";
+            $sql="insert into utilisateur values ($id,'$email','$hash','$pseudo',false)";
             ConnectionFactory::makeConnection()->exec($sql);
             return true ;
         }
@@ -68,4 +68,15 @@ class Auth
             return time()<=$dateexpires;
         }
     }
+
+    public static function getActivite(string $email):bool{
+        $sql="select activite from utilisateur where email='$email'";
+        return ConnectionFactory::makeConnection()->query($sql)->fetch()[0];
+    }
+
+    public static function setActivite(string $email,bool $activite){
+        $sql="update utilisateur set activite=$activite where email='$email'";
+        ConnectionFactory::makeConnection()->exec($sql);
+    }
+
 }

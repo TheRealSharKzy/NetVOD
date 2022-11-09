@@ -59,10 +59,15 @@ class SigninAction extends Action
                 return $page;
             }
             else{
-                Auth::loadProfile($user);
-                //$url="http://localhost:63342/NetVOD/acceuil.html";
-                //return "<meta http-equiv='refresh' content='0.5;url=$url'>";
-                return 'Vous êtes connecté';
+                if(Auth::getActivite($email)){
+                    Auth::loadProfile($user);
+                    //$url="http://localhost:63342/NetVOD/acceuil.html";
+                    //return "<meta http-equiv='refresh' content='0.5;url=$url'>";
+                    return 'Vous êtes connecté';
+                }else{
+                    setcookie("user",$email);
+                    return "you have not activated this account.<br><a href='?action=activite'>activate</a>";
+                }
             }
         }else{
             return "inaccessible.";
