@@ -2,6 +2,7 @@
 
 namespace Action;
 
+//un classe abstait pour tous les classes de action
 abstract class Action {
 
     protected ?string $http_method = null;
@@ -14,7 +15,8 @@ abstract class Action {
         $this->hostname = $_SERVER['HTTP_HOST'];
         $this->script_name = $_SERVER['SCRIPT_NAME'];
     }
-    
+
+    //retourn un page de html pour cet action
     abstract public function execute() : string;
     
 }

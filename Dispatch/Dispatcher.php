@@ -2,7 +2,7 @@
 
 namespace Dispatch;
 
-use Action\ActiviteAction;
+use Action\ActiveAction;
 use Action\EpisodeAction;
 use Action\InscriptAction;
 use Action\ListEnCoursAction;
@@ -24,6 +24,9 @@ class Dispatcher
                     $ac = new InscriptAction();
                     break;
                 case "sign-in":
+                    if (isset($_SESSION['user'])) {
+                        unset($_SESSION['user']);
+                    }
                     $ac = new SigninAction();
                     break;
                 case "SerieListEpisode":
@@ -42,9 +45,13 @@ class Dispatcher
                 case "show-catalogue":
                     $ac = new ShowCatalogueAction();
                     break;
-                case "activite":
-                    $ac=new ActiviteAction();
+                case "active":
+                    $ac=new ActiveAction();
                     break;
+                case "disconnect":
+                    unset($_SESSION['user']);
+
+                    $ac = new SigninAction();
                 default:
             }
         }else{
@@ -58,9 +65,12 @@ class Dispatcher
     public function renderPage(string $html){
         $rubrique ='';
         if (isset($_SESSION['user'])){
-            $rubrique= "<div class='rubrique'>
+            $rubrique= "
             <a href='?action=show-catalogue'>Catalogue</a>
-        </div>";
+            <a href='?action=sign-in'>Disconnect</a>";
+        } else {
+            $rubrique = "<a href='?action=inscript'>Register</a>                       
+                            <a href='?action=sign-in'>Login</a>";
         }
 
         echo <<<END
@@ -78,12 +88,7 @@ class Dispatcher
         <h1>NetVOD</h1>
     </header>
 
-    <nav>
-        <a href="?action=inscript">Register</a>
-
-        <div class="rubrique">
-            <a href="?action=sign-in">Login</a>
-        </div>
+    <nav>      
         
         $rubrique
     </nav>
