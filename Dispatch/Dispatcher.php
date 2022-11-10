@@ -12,6 +12,8 @@ use Action\ShowCatalogueAction;
 use Action\SigninAction;
 use Catalogue\Episode\Episode;
 use DB\ConnectionFactory;
+use http\Header;
+use User\User;
 
 class Dispatcher
 {
@@ -30,36 +32,24 @@ class Dispatcher
                     $ac = new SigninAction();
                     break;
                 case "SerieListEpisode":
-                    if (isset($_SESSION['user'])) {
-                        $ac = new SerieListEpisodeAction();
-                    } else {
-                        $ac = new SigninAction();
-                    }
+                    User::checkLogin();
+                    $ac = new SerieListEpisodeAction();
                     break;
                 case "episode":
+                    User::checkLogin();
                     ListEnCoursAction::ajoutEnCours($_GET['id'],unserialize($_SESSION['user'])->id);
-                    if (isset($_SESSION['user'])) {
-                        $ac = new EpisodeAction(episode::getEpById($_GET['id']));
-                    } else {
-                        $ac = new SigninAction();
-                    }
+                    $ac = new EpisodeAction(episode::getEpById($_GET['id']));
                     break;
                 case "reset-password":
                     $ac = new ResetPassword();
                     break;
                 case "ListEnCours":
-                    if (isset($_SESSION['user'])) {
-                        $ac = new ListEnCoursAction();
-                    } else {
-                        $ac = new SigninAction();
-                    }
+                    User::checkLogin();
+                    $ac = new ListEnCoursAction();
                     break;
                 case "show-catalogue":
-                    if (isset($_SESSION['user'])) {
-                        $ac = new ShowCatalogueAction();
-                    } else {
-                        $ac = new SigninAction();
-                    }
+                    User::checkLogin();
+                    $ac = new ShowCatalogueAction();
                     break;
                 case "active":
                     $ac=new ActiveAction();

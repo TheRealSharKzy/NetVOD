@@ -3,6 +3,7 @@
 namespace User;
 
 use Exception\InvalideProperty;
+use http\Header;
 use list\ListePreference;
 
 class User
@@ -24,6 +25,12 @@ class User
     {
         if(property_exists($this,$name))return $this->$name;
         else throw new InvalideProperty();
+    }
+
+    static function checkLogin() {
+        if (!isset($_SESSION['user'])){
+            Header('Location: ?action=sign-in');
+        }
     }
 
     /**
