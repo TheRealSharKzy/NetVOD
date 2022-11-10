@@ -114,9 +114,6 @@ END;
         return $html;
     }
 
-    /**
-     * @throws \Exception La Condition inconnue
-     */
     public static function ajoutCondition(int $id_episode, string $condition){
         $id_user = unserialize($_SESSION['user'])->id;
 
@@ -134,7 +131,8 @@ END;
                 break;
             }
             default:{
-                throw new \Exception("condition inconnue");
+                echo "Condition inconnue";
+                return;
             }
         }
 

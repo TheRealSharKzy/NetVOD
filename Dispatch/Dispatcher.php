@@ -5,6 +5,7 @@ namespace Dispatch;
 use Action\ActiveAction;
 use Action\EpisodeAction;
 use Action\InscriptAction;
+use Action\ListAction;
 use Action\ListEnCoursAction;
 use Action\SerieListEpisodeAction;
 use Action\ResetPassword;
@@ -20,9 +21,12 @@ class Dispatcher
     public function run(){
         $action = $_GET['action'] ?? null;
 
+
+
         if(!is_null($action)){
             switch ($action) {
                 case "inscript":
+                    Header('Location: ?action=show-catalogue');
                     $ac = new InscriptAction();
                     break;
                 case "sign-in":
@@ -37,15 +41,16 @@ class Dispatcher
                     break;
                 case "episode":
                     User::checkLogin();
-                    ListEnCoursAction::ajoutEnCours($_GET['id'],unserialize($_SESSION['user'])->id);
+//                    ListEnCoursAction::ajoutEnCours($_GET['id'],unserialize($_SESSION['user'])->id);
+                    ListAction::ajoutCondition($_GET['id'],'EnCours');
                     $ac = new EpisodeAction(episode::getEpById($_GET['id']));
                     break;
                 case "reset-password":
                     $ac = new ResetPassword();
                     break;
-                case "ListEnCours":
+                case "List":
                     User::checkLogin();
-                    $ac = new ListEnCoursAction();
+                    $ac = new ListAction(); //besoin type : EnCours,Prefere,Visionne dans $_GET
                     break;
                 case "show-catalogue":
                     User::checkLogin();
