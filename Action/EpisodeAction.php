@@ -4,7 +4,6 @@ namespace Action;
 
 use Catalogue\Episode\episode;
 use DB\ConnectionFactory;
-use User\User;
 
 class EpisodeAction extends Action
 {
@@ -14,7 +13,6 @@ class EpisodeAction extends Action
     public function __construct(episode $e)
     {
         $this->ep = $e;
-        $this->add = $this->loadadd($e);
     }
 
 
@@ -32,23 +30,7 @@ class EpisodeAction extends Action
                  <form method='post'>
                  {$this->createbutton()}
                  </form> 
-                 
-                      
-                 
-                 <script>
-                    function b1(){
-                        if (add){
-                            document.getElementById('b1').value = 'Retirer de la liste de préférences';
-                            add = true;
-                            {$this->button1()}
-                        }
-                        else{
-                            document.getElementById('b1').value = 'Ajouter à la liste de préférences';
-                            add = false;
-                            {$this->button1()}
-                        }
-                    }
-                 </script>
+                                                                         
                
                  <h1 class='title'>Commente la série</h1>
                  <form method='post' class='CommentForm'>
@@ -131,62 +113,61 @@ class EpisodeAction extends Action
         ";
 
 
-        if (isset($_POST['commentButton'])) {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $comment = ConnectionFactory::makeConnection()->prepare("select count(*) from Commentaires where email = ? and idSerie=?");
-                $user = unserialize($_SESSION['user']);
-                $idSerie = $_SESSION['idserie'];
-                $comment->bindParam(1, $user->email);
-                $comment->bindParam(2, $idSerie);
-                $comment->execute();
-                if ($comment->fetch()[0] != 0) {
-                    $html .= "Vous avez déjà noté cette série";
+                if (isset($_POST['commentButton'])) {
+                    $this->add = !$this->add;
+                    $comment = ConnectionFactory::makeConnection()->prepare("select count(*) from Commentaires where email = ? and idSerie=?");
+                    $user = unserialize($_SESSION['user']);
+                    $idSerie = $_SESSION['idserie'];
+                    $comment->bindParam(1, $user->email);
+                    $comment->bindParam(2, $idSerie);
+                    $comment->execute();
+                    if ($comment->fetch()[0] != 0) {
+                        $html .= "Vous avez déjà noté cette série";
+                    } else {
+                        ConnectionFactory::makeConnection()->exec("insert into Commentaires values ({$_SESSION['idserie']},'{$user->email}',{$_POST['note']},'{$_POST['commentaire']}')");
+                        $html .= "Merci pour votre commentaire";
+                    }
                 } else {
-                    ConnectionFactory::makeConnection()->exec("insert into Commentaires values ({$_SESSION['idserie']},'{$user->email}',{$_POST['note']},'{$_POST['commentaire']}')");
-                    $html .= "Merci pour votre commentaire";
+                    $this->button1();
                 }
             }
-        }
         return $html;
     }
 
-    function loadadd(episode $e){
+    function loadadd() : int{
         $user = unserialize($_SESSION['user']);
         $idSerie = $_SESSION['idserie'];
         $add = ConnectionFactory::makeConnection()->prepare("select estprefere from liste_epv where id = ? and id_serie=?");
         $add->bindParam(1, $user->id);
         $add->bindParam(2, $idSerie);
         $add->execute();
-        if ($add->fetch()[0] != 0) {
-            return true;
-        }
-        else{
-            return false;
-        }
+        $res = $add->fetch()[0];
+        return $res;
     }
 
     function createbutton() : string{
-        if ($this->add){
-            return "<input type='submit' name='button1' id='b1' onclick='b1' value='Retirer de la liste de préférences'>";
-        }
-        else{
-            return "<input type='submit' name='button1' id='b1' onclick='b1' value='Ajouter à la liste de préférences'>";
+        echo "create :" . $this->loadadd();
+        if ($this->loadadd()==1){
+            return "<input type='submit' name='button1' id='b1' value='Retirer de la liste de préférences'>";
+        } else {
+            return "<input type='submit' name='button1' id='b1' value='Ajouter à la liste de préférences'>";
         }
     }
 
     function button1(){
         $user = unserialize($_SESSION['user']);
         $idSerie = $_SESSION['idserie'];
-        if ($this->add){
-            ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere=null where id = '{$user->id}' and id_serie={$idSerie}");
-        }
-        else{
-            $exist = ConnectionFactory::makeConnection()->query("select count(*) from liste_epv where id = '{$user->id}' and id_serie={$idSerie}");
+        if ($this->loadadd()==1){
+            echo "in";
+            ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere=0 where id = {$user->id} and id_serie={$idSerie}");
+        } else{
+            $exist = ConnectionFactory::makeConnection()->query("select count(*) from liste_epv where id = {$user->id} and id_serie={$idSerie}");
             $exist->execute();
             if ($exist->fetch()[0]==0) {
-                ConnectionFactory::makeConnection()->exec("insert into liste_epv(id,id_serie,estprefere) values ({$user->id},'{$idSerie}',1)");
+                ConnectionFactory::makeConnection()->exec("insert into liste_epv(id,id_serie,estprefere) values ({$user->id},{$idSerie},1)");
             } else {
-                ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere=1 where id = '{$user->id}' and id_serie={$idSerie}");
+                ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere=1 where id = {$user->id} and id_serie={$idSerie}");
             }
         }
     }

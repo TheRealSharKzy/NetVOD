@@ -97,6 +97,11 @@ footer {
     width: 100%;
 }
 
+#Header1{
+    color: inherit;
+    text-decoration: inherit;
+}
+
 @media screen and (max-width: 1000px)
 {
     header, nav
@@ -162,3 +167,4 @@ footer {
     }
 
 }
+

@@ -60,6 +60,7 @@ class Dispatcher
                     $ac=new ActiveAction();
                     break;
                 case "accueil":
+                    User::checkLogin();
                     $ac = new AccueilAction();
                     break;
                 default:
@@ -94,7 +95,7 @@ class Dispatcher
 <body>
 
     <header>
-        <h1>NetVOD</h1>
+        <h1><a id="Header1" href = ?action=accueil>NetVOD</a></h1>
     </header>
 
     <nav>      
