@@ -97,9 +97,8 @@ class ListAction extends Action
                 overflow: auto;
             }
             
-            .{$this->t_css}D{
-                background-color: antiquewhite;
-                border: 5px solid deepskyblue;
+            
+            .{$this->t_css}D{                
                 border-radius: 35px;
                 width: {$width_LECA_2}px;
             }

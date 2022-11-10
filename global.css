@@ -1,4 +1,5 @@
 * {
+    font-family: "URW Gothic";
     box-sizing: border-box;
     margin:0;
     padding:0;
@@ -6,20 +7,20 @@
 
 body {
     font-size:1em;
-    background-color: blanchedalmond;
+    background-color: #F0FFFF ;/*blanchedalmond*/
     display:flex;
     flex-direction: column;
 }
 
 header, nav, footer {
-    background-color:darksalmon
+    background-color:  	#FFFAFA /*darksalmon*/
 }
 
 header {
     text-align: center;
     margin: 0 10%;
-    border-width: 0 3px;
-    border-color: black;
+    border-width: 0 1px;
+    border-color: gray;
     border-style: solid;
     font-size: 2vw;
     transition: all 1s;
@@ -31,7 +32,7 @@ main section * {
 }
 
 nav{
-    border:3px solid black;
+    border:1px solid gray;
     border-radius: 0 0 20px 20px;
     margin: 0 10%;
     display: flex;
@@ -75,7 +76,7 @@ h2 {
 main > article {
     text-align: center;
     border-radius: 20px;
-    border:3px solid black;
+    border:1px solid gray;
     padding: 1em;
     background-color: white;
 }
