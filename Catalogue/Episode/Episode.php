@@ -32,4 +32,9 @@ class episode
         else throw new InvalideProperty();
     }
 
+    public static function getIDserie(int $id):int{
+        $bdd = ConnectionFactory::makeConnection();
+        return $bdd->query("select serie_id from episode where id = $id")->fetch()[0];
+    }
+
 }

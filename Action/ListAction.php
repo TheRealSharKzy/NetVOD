@@ -128,8 +128,10 @@ END;
         return $html;
     }
 
-    public static function ajoutCondition(int $id_episode, string $condition){
+    public static function ajoutCondition(int $id_serie, string $condition){
+
         $id_user = unserialize($_SESSION['user'])->id;
+
 
         switch ($condition){
             case 'EnCours':{
@@ -152,7 +154,7 @@ END;
 
 
         $bdd = ConnectionFactory::makeConnection();
-        $id_serie = $bdd->query("select serie_id from episode where id = $id_episode")->fetch()[0];
+//        $id_serie = $bdd->query("select serie_id from episode where id = $id_episode")->fetch()[0];
 
         $estvide = ($bdd->query("select count(*) from liste_epv where id = $id_user and id_serie = $id_serie")->fetch()[0] == 0);
 

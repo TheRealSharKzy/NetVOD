@@ -21,8 +21,8 @@ class ShowCatalogueAction extends Action
 <a href='?action=show-catalogue&tir=nb-episode&find=$find'><li>number of episode</li></a>
 <a href='?action=show-catalogue&find=$find'><li>default</li></a>
 </menu>";
-        }else{
-            $menu="<menu>
+        }else {
+            $menu = "<menu>
 <a href='?action=show-catalogue&tir=titre'><li>titre</li></a>
 <a href='?action=show-catalogue&tir=annee'><li>yeur</li></a>
 <a href='?action=show-catalogue&tir=date-ajout'><li>date make</li></a>
@@ -31,7 +31,8 @@ class ShowCatalogueAction extends Action
 <a href='?action=show-catalogue'><li>default</li></a>
 </menu>";
         }
-        $tir=$_GET['tir'];
+
+        $tir= $_GET['tir'] ?? 'titre';
         //page html base
         $page = "<form method='post'>
 <input type='text' name='find'><input type='submit' value='find'>
@@ -42,7 +43,8 @@ class ShowCatalogueAction extends Action
 tir par:
 ".$menu;
         $bdd = ConnectionFactory::makeConnection();
-        switch ($_GET['tir']){//tir les cataloge selon un choix de client
+        $tir= $_GET['tir'] ?? 'titre';
+        switch ($tir){//tir les cataloge selon un choix de client
             case 'titre':
                 $sql="select * from serie order by titre";break;
             case 'annee':

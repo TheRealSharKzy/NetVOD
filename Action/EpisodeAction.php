@@ -18,13 +18,19 @@ class EpisodeAction extends Action
 
     public function execute(): string
     {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!isset($_POST['commentButton'])) {
+                $this->button1();
+            }
+        }
+
         $html = "<div class='info'>
-                 <h1 id='title'> " . $this->ep->nom . "</h1>
+                 <h1 id='title'>{$this->ep->nom}</h1>
                  <video controls='' width='900'>
                  <source src='video/{$this->ep->url}' type='video/mp4'>
                  </video>
-                 <br class='epi'> durée : " . $this->ep->duree . "s<br>
-                 <br class='epi'> " . $this->ep->resume . "</br>
+                 <br class='epi'> durée : {$this->ep->duree}s<br>
+                 <br class='epi'>{$this->ep->resume}</br>
                  </div>
               
                  <form method='post'>
@@ -113,6 +119,10 @@ class EpisodeAction extends Action
         ";
 
 
+
+
+
+
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (isset($_POST['commentButton'])) {
                     $this->add = !$this->add;
@@ -129,7 +139,7 @@ class EpisodeAction extends Action
                         $html .= "Merci pour votre commentaire";
                     }
                 } else {
-                    $this->button1();
+//                    $this->button1();
                 }
             }
         return $html;
@@ -143,14 +153,17 @@ class EpisodeAction extends Action
         $add->bindParam(2, $idSerie);
         $add->execute();
         $res = $add->fetch()[0];
+        if(is_null($res)){
+            $res = 0;
+        }
         return $res;
     }
 
     function createbutton() : string{
-        echo "create :" . $this->loadadd();
+//        echo "create :" . $this->loadadd(); //supprimer
         if ($this->loadadd()==1){
             return "<input type='submit' name='button1' id='b1' value='Retirer de la liste de préférences'>";
-        } else {
+        }else{
             return "<input type='submit' name='button1' id='b1' value='Ajouter à la liste de préférences'>";
         }
     }
@@ -158,17 +171,21 @@ class EpisodeAction extends Action
     function button1(){
         $user = unserialize($_SESSION['user']);
         $idSerie = $_SESSION['idserie'];
-        if ($this->loadadd()==1){
+        if ($this->loadadd()==1) {
             echo "in";
             ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere=0 where id = {$user->id} and id_serie={$idSerie}");
-        } else{
-            $exist = ConnectionFactory::makeConnection()->query("select count(*) from liste_epv where id = {$user->id} and id_serie={$idSerie}");
-            $exist->execute();
-            if ($exist->fetch()[0]==0) {
-                ConnectionFactory::makeConnection()->exec("insert into liste_epv(id,id_serie,estprefere) values ({$user->id},{$idSerie},1)");
-            } else {
-                ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere=1 where id = {$user->id} and id_serie={$idSerie}");
-            }
+        }else{
+            ListAction::ajoutCondition($idSerie, 'Prefere');
+
+//            ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere=0 where id = {$user->id} and id_serie={$idSerie}");
+//        } else{
+//            $exist = ConnectionFactory::makeConnection()->query("select count(*) from liste_epv where id = {$user->id} and id_serie={$idSerie}");
+//            $exist->execute();
+//            if ($exist->fetch()[0]==0) {
+//                ConnectionFactory::makeConnection()->exec("insert into liste_epv(id,id_serie,estprefere) values ({$user->id},{$idSerie},1)");
+//            } else {
+//                ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere=1 where id = {$user->id} and id_serie={$idSerie}");
+//            }
         }
     }
 }

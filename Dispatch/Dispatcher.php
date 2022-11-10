@@ -40,8 +40,9 @@ class Dispatcher
                     break;
                 case "episode":
                     User::checkLogin();
-//                    ListEnCoursAction::ajoutEnCours($_GET['id'],unserialize($_SESSION['user'])->id);
-                    ListAction::ajoutCondition($_GET['id'],'EnCours');
+
+                    $id_serie = Episode::getIDserie($_GET['id']);
+                    ListAction::ajoutCondition($id_serie,'EnCours');
                     $ac = new EpisodeAction(episode::getEpById($_GET['id']));
                     break;
                 case "reset-password":
