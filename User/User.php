@@ -2,9 +2,9 @@
 
 namespace User;
 
+use Catalogue\list\ListePreference;
 use Exception\InvalideProperty;
-use http\Header;
-use list\ListePreference;
+
 
 class User
 {
@@ -19,9 +19,10 @@ class User
         $this->id=$id;
         $this->email=$email;
         $this->pseudo=$pseudo;
+        $this->listPref = new ListePreference();
     }
 
-    public function &__get($name)
+    public function __get($name)
     {
         if(property_exists($this,$name))return $this->$name;
         else throw new InvalideProperty();

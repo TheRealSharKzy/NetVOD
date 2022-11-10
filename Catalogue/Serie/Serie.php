@@ -41,6 +41,13 @@ class serie
         $this->nbEpisodes = count($this->episodes);
     }
 
+    public static function getSerieById(int $id) : serie{
+        $res = ConnectionFactory::makeConnection()->query("select * from serie where id = $id");
+        $res->execute();
+        $row = $res->fetch(\PDO::FETCH_ASSOC);
+        return new serie($id,$row['titre'],$row['img'],$row['descriptif'],$row['annee'],$row['date_ajout']);
+    }
+
     public function getEpById(int $id) : ?episode{
         foreach($this->episodes as $key=>$val){
             if ($val->id == $id){

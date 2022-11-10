@@ -63,4 +63,14 @@ class ListePreference
         return false;
     }
 
+    // Supprime la série $serie de la liste
+    public function supprimerSerie(serie $serie)
+    {
+        foreach ($this->liste as $key => $serieListe) {
+            if ($serieListe->getId() == $serie->getId()) {
+                unset($this->liste[$key]);
+            }
+        }
+    }
+
 }
