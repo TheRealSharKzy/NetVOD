@@ -53,7 +53,7 @@ class ProfilAction extends Action
         $page="<form method='post'>
 pseudo: <input type='text' name='pseudo' value='$pseudo' required>
 email: <input type='email' name='email' value='$email' required>
-<input type='submit' value='sur'>
+<input type='submit' value='Changer'>
 </form>";
         return $page;
     }
