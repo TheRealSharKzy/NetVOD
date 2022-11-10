@@ -77,10 +77,19 @@ class SerieListEpisodeAction extends Action
             $i ++;
         }
 
+        $genres = ConnectionFactory::makeConnection()->query("select libelle from genre inner join estGenre on genre.idGenre = estGenre.idGenre where idSerie={$_GET['id']}");
+        $types = ConnectionFactory::makeConnection()->query("select libelle from typePublic inner join estType on typePublic.idType = estType.idType where idSerie={$_GET['id']}");
 
+        $genresHtml ="";
+        $typesHtml = "";
 
+        while ($row = $genres->fetch()){
+            $genresHtml.= "<p>   -{$row[0]}</p>";
+        }
 
-
+        while ($row = $types->fetch()){
+            $typesHtml.= "<p>   -{$row[0]}</p>";
+        }
 
         $html .=<<<END
         <div>
@@ -90,6 +99,10 @@ class SerieListEpisodeAction extends Action
              <h3>Annee: $annee</h3>
              <h3>Date d'ajout: $date_ajout</h3>
              <h3>Note moyenne: $avgNote</h3>
+             <h3>Genre :</h3>
+             $genresHtml
+             <h3>Type de public visée :</h3>
+             $typesHtml            
             
             $html_p1
              
