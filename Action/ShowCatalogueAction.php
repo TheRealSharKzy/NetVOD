@@ -11,11 +11,18 @@ class ShowCatalogueAction extends Action
 {
     private Serie $serie;
     public function execute(): string{
-        $page = "<form method='get'>
-<input type='text' ><input type='submit' value='find'>
-</form>
-tir par:
-<menu>
+        if(isset($_POST['find'])||isset($_GET['find'])){
+            $find=isset($_POST['find'])?$_POST['find']:$_GET['find'];
+            $menu="<menu>
+<a href='?action=show-catalogue&tir=titre&find=$find'><li>titre</li></a>
+<a href='?action=show-catalogue&tir=annee&find=$find'><li>yeur</li></a>
+<a href='?action=show-catalogue&tir=date-ajout&find=$find'><li>date make</li></a>
+<a href='?action=show-catalogue&tir=duree&find=$find'><li>time</li></a>
+<a href='?action=show-catalogue&tir=nb-episode&find=$find'><li>number of episode</li></a>
+<a href='?action=show-catalogue&find=$find'><li>default</li></a>
+</menu>";
+        }else{
+            $menu="<menu>
 <a href='?action=show-catalogue&tir=titre'><li>titre</li></a>
 <a href='?action=show-catalogue&tir=annee'><li>yeur</li></a>
 <a href='?action=show-catalogue&tir=date-ajout'><li>date make</li></a>
@@ -23,6 +30,12 @@ tir par:
 <a href='?action=show-catalogue&tir=nb-episode'><li>number of episode</li></a>
 <a href='?action=show-catalogue'><li>default</li></a>
 </menu>";
+        }
+        $page = "<form method='post'>
+<input type='text' name='find'><input type='submit' value='find'>
+</form>
+tir par:
+".$menu;
         $bdd = ConnectionFactory::makeConnection();
         switch ($_GET['tir']){
             case 'titre':
@@ -41,7 +54,7 @@ tir par:
         $res = $bdd->query($sql);
         while ($row = $res->fetch(\PDO::FETCH_ASSOC)) {
             $titre=$row['titre'];
-            if(!isset($_GET['find'])&&preg_match("#".strtolower($_GET['find'])."#", strtolower($titre))){//si le mot de chercher est correspondant
+            if($this->http_method=='GET'&&(!isset($_GET['find'])||preg_match("#".strtolower($_GET['find'])."#", strtolower($titre)))||$this->http_method=='POST'&&preg_match("#".strtolower($_POST['find'])."#", strtolower($titre))){//si le mot de chercher est correspondant
                 $page .= "<div class='serie'>
                 <div class='serieDesc'>
                     <h2>" . $titre . "</h2>
