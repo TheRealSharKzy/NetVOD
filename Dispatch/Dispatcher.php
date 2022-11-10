@@ -76,8 +76,8 @@ class Dispatcher
     public function renderPage(string $html){
         $rubrique ='';
         if (isset($_SESSION['user'])){
-            $rubrique= "<a href='?action=show-catalogue'>Catalogue</a>
-            <a href='?action=accueil'>Accueil</a>
+            $rubrique= "<a href='?action=accueil'>Accueil</a>
+            <a href='?action=show-catalogue'>Catalogue</a>           
             <a href='?action=sign-in'>Disconnect</a>";
         } else {
             $rubrique = "<a href='?action=inscript'>Register</a>                       
