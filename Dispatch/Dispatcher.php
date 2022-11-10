@@ -63,7 +63,8 @@ class Dispatcher
                     $ac = new SigninAction();
                     break;
                 case "profil":
-                    if(!Auth::authenticateToken($_GET["token"]))User::checkLogin();
+                    $token = $_GET['token'] ?? "";
+                    if(!Auth::authenticateToken($token)) User::checkLogin();
                     $ac=new ProfilAction();
                     break;
                 default:
