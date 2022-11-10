@@ -6,10 +6,24 @@ use DB\ConnectionFactory;
 
 class ListAction extends Action
 {
+    public static int $NCSS = 0;
+    private string $type;
+    private string $t_css = 'LPA_';
+
+    public function __construct(string $type)
+    {
+        if(ListAction::$NCSS > 100){
+            ListAction::$NCSS = 0;
+        }else{
+            ListAction::$NCSS++;
+        }
+        $this->t_css .= ListAction::$NCSS;
+        $this->type = $type;
+    }
 
     public function execute(): string
     {
-        $type_list = $_GET['type'];
+        $type_list = $this->type;
 
         switch ($type_list){
             case 'EnCours' :{
@@ -39,7 +53,7 @@ class ListAction extends Action
 
         }
 
-        $html = "<div class ='LPA'><h3 id='LPA_h3'>$titre_list</h3><div class='LPA_1'><div class='LPA_2'>";
+        $html = "<div class ='LPA'><h3 id='LPA_h3'>$titre_list</h3><div class={$this->t_css}><div class={$this->t_css}D>";
 
         $bdd = ConnectionFactory::makeConnection();
         $user = unserialize($_SESSION['user']);
@@ -77,13 +91,13 @@ class ListAction extends Action
         </div>
         </div>
         <style>      
-            .LPA_1{
+            .{$this->t_css}{
                 height: {$height_LECA_1}px;
                 width:1000px;
                 overflow: auto;
             }
             
-            .LPA_2{
+            .{$this->t_css}D{
                 background-color: antiquewhite;
                 border: 5px solid deepskyblue;
                 border-radius: 35px;

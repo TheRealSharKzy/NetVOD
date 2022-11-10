@@ -2,11 +2,11 @@
 
 namespace Dispatch;
 
+use Action\AccueilAction;
 use Action\ActiveAction;
 use Action\EpisodeAction;
 use Action\InscriptAction;
 use Action\ListAction;
-use Action\ListEnCoursAction;
 use Action\SerieListEpisodeAction;
 use Action\ResetPassword;
 use Action\ShowCatalogueAction;
@@ -26,7 +26,6 @@ class Dispatcher
         if(!is_null($action)){
             switch ($action) {
                 case "inscript":
-                    Header('Location: ?action=show-catalogue');
                     $ac = new InscriptAction();
                     break;
                 case "sign-in":
@@ -50,7 +49,8 @@ class Dispatcher
                     break;
                 case "List":
                     User::checkLogin();
-                    $ac = new ListAction(); //besoin type : EnCours,Prefere,Visionne dans $_GET
+                    $type = $_GET['type'];
+                    $ac = new ListAction($type); //besoin type : EnCours,Prefere,Visionne dans $_GET
                     break;
                 case "show-catalogue":
                     User::checkLogin();
@@ -58,6 +58,9 @@ class Dispatcher
                     break;
                 case "active":
                     $ac=new ActiveAction();
+                    break;
+                case "accueil":
+                    $ac = new AccueilAction();
                     break;
                 default:
             }
