@@ -11,7 +11,7 @@ class ShowCatalogueAction extends Action
 {
     private Serie $serie;
     public function execute(): string{
-        if(isset($_POST['find'])||isset($_GET['find'])){
+        if(isset($_POST['find'])||isset($_GET['find'])){//si un client a cherché cataloque
             $find=isset($_POST['find'])?$_POST['find']:$_GET['find'];
             $menu="<menu>
 <a href='?action=show-catalogue&tir=titre&find=$find'><li>titre</li></a>
@@ -31,8 +31,12 @@ class ShowCatalogueAction extends Action
 <a href='?action=show-catalogue'><li>default</li></a>
 </menu>";
         }
+        $tir=$_GET['tir'];
         $page = "<form method='post'>
 <input type='text' name='find'><input type='submit' value='find'>
+</form>
+<form method='post' action='?action=show-catalogue&tir=$tir'>
+<input type='submit' value='show all'>
 </form>
 tir par:
 ".$menu;
