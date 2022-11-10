@@ -11,7 +11,7 @@ class ShowCatalogueAction extends Action
 {
     private Serie $serie;
     public function execute(): string{
-        if(isset($_POST['find'])||isset($_GET['find'])){//si un client a cherché cataloque
+        if(isset($_POST['find'])||isset($_GET['find'])){//si un client a cherché cataloque par mot clé, ajouter le dans url
             $find=isset($_POST['find'])?$_POST['find']:$_GET['find'];
             $menu="<menu>
 <a href='?action=show-catalogue&tir=titre&find=$find'><li>titre</li></a>
@@ -32,6 +32,7 @@ class ShowCatalogueAction extends Action
 </menu>";
         }
         $tir=$_GET['tir'];
+        //page html base
         $page = "<form method='post'>
 <input type='text' name='find'><input type='submit' value='find'>
 </form>
@@ -41,7 +42,7 @@ class ShowCatalogueAction extends Action
 tir par:
 ".$menu;
         $bdd = ConnectionFactory::makeConnection();
-        switch ($_GET['tir']){
+        switch ($_GET['tir']){//tir les cataloge selon un choix de client
             case 'titre':
                 $sql="select * from serie order by titre";break;
             case 'annee':
@@ -59,6 +60,7 @@ tir par:
         while ($row = $res->fetch(\PDO::FETCH_ASSOC)) {
             $titre=$row['titre'];
             if($this->http_method=='GET'&&(!isset($_GET['find'])||preg_match("#".strtolower($_GET['find'])."#", strtolower($titre)))||$this->http_method=='POST'&&preg_match("#".strtolower($_POST['find'])."#", strtolower($titre))){//si le mot de chercher est correspondant
+                //ajouter dans la page
                 $page .= "<div class='serie'>
                 <div class='serieDesc'>
                     <h2>" . $titre . "</h2>
