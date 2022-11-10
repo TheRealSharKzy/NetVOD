@@ -8,7 +8,6 @@ use DB\ConnectionFactory;
 class EpisodeAction extends Action
 {
     private episode $ep;
-    private bool $add;
 
     public function __construct(episode $e)
     {
@@ -40,8 +39,8 @@ class EpisodeAction extends Action
                
                  <h1 class='title'>Commente la série</h1>
                  <form method='post' class='CommentForm'>
-                 <input id='note' class='form' type='number' name='note' placeholder='Note de la série' min='0' max='5'>
-                 <input id='comment' class='form' type='text' name='commentaire' placeholder='Commentaire'>      
+                 <input id='note' class='form' type='number' name='note' placeholder='Note de la série' min='0' max='5' required>
+                 <input id='comment' class='form' type='text' name='commentaire' placeholder='Commentaire' required>      
                  <button class='form' type='submit' name='commentButton'>Valider</button>
                  </form>
 
@@ -118,14 +117,8 @@ class EpisodeAction extends Action
 
         ";
 
-
-
-
-
-
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (isset($_POST['commentButton'])) {
-                    $this->add = !$this->add;
                     $comment = ConnectionFactory::makeConnection()->prepare("select count(*) from Commentaires where email = ? and idSerie=?");
                     $user = unserialize($_SESSION['user']);
                     $idSerie = $_SESSION['idserie'];

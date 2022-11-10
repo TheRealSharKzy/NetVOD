@@ -15,20 +15,20 @@ class ShowCatalogueAction extends Action
             $find= $_POST['find'] ?? $_GET['find'];
             $menu="<menu>
 <a href='?action=show-catalogue&tir=titre&find=$find'><li>titre</li></a>
-<a href='?action=show-catalogue&tir=annee&find=$find'><li>yeur</li></a>
-<a href='?action=show-catalogue&tir=date-ajout&find=$find'><li>date make</li></a>
-<a href='?action=show-catalogue&tir=duree&find=$find'><li>time</li></a>
-<a href='?action=show-catalogue&tir=nb-episode&find=$find'><li>number of episode</li></a>
-<a href='?action=show-catalogue&find=$find'><li>default</li></a>
+<a href='?action=show-catalogue&tir=annee&find=$find'><li>année</li></a>
+<a href='?action=show-catalogue&tir=date-ajout&find=$find'><li>date d'ajout</li></a>
+<a href='?action=show-catalogue&tir=duree&find=$find'><li>Année de création</li></a>
+<a href='?action=show-catalogue&tir=nb-episode&find=$find'><li>Nombre d'épisodes</li></a>
+<a href='?action=show-catalogue&find=$find'><li>Par défaut</li></a>
 </menu>";
         }else {
             $menu = "<menu>
 <a href='?action=show-catalogue&tir=titre'><li>titre</li></a>
-<a href='?action=show-catalogue&tir=annee'><li>yeur</li></a>
-<a href='?action=show-catalogue&tir=date-ajout'><li>date make</li></a>
-<a href='?action=show-catalogue&tir=duree'><li>time</li></a>
-<a href='?action=show-catalogue&tir=nb-episode'><li>number of episode</li></a>
-<a href='?action=show-catalogue'><li>default</li></a>
+<a href='?action=show-catalogue&tir=annee'><li>année</li></a>
+<a href='?action=show-catalogue&tir=date-ajout'><li>date d'ajout</li></a>
+<a href='?action=show-catalogue&tir=duree'><li>Année de création</li></a>
+<a href='?action=show-catalogue&tir=nb-episode'><li>Nombre d'épisodes</li></a>
+<a href='?action=show-catalogue'><li>Par défaut</li></a>
 </menu>";
         }
 
@@ -40,7 +40,7 @@ class ShowCatalogueAction extends Action
 <form method='post' action='?action=show-catalogue&tir=$tir'>
 <input type='submit' value='show all'>
 </form>
-tir par:
+tri par:
 ".$menu;
         $bdd = ConnectionFactory::makeConnection();
         $tir= $_GET['tir'] ?? 'titre';
