@@ -12,7 +12,7 @@ class ShowCatalogueAction extends Action
     private Serie $serie;
     public function execute(): string{
         if(isset($_POST['find'])||isset($_GET['find'])){//si un client a cherché cataloque par mot clé, ajouter le dans url
-            $find=isset($_POST['find'])?$_POST['find']:$_GET['find'];
+            $find= $_POST['find'] ?? $_GET['find'];
             $menu="<menu>
 <a href='?action=show-catalogue&tir=titre&find=$find'><li>titre</li></a>
 <a href='?action=show-catalogue&tir=annee&find=$find'><li>yeur</li></a>
@@ -60,8 +60,13 @@ tir par:
         }
         $res = $bdd->query($sql);
         while ($row = $res->fetch(\PDO::FETCH_ASSOC)) {
+            $post_find = $_POST['find'] ?? "";
+
             $titre=$row['titre'];
-            if($this->http_method=='GET'&&(!isset($_GET['find'])||preg_match("#".strtolower($_GET['find'])."#", strtolower($titre)))||$this->http_method=='POST'&&preg_match("#".strtolower($_POST['find'])."#", strtolower($titre))){//si le mot de chercher est correspondant
+            if($this->http_method=='GET'&&(!isset($_GET['find'])||
+                    preg_match("#".strtolower($_GET['find'])."#", strtolower($titre)))||
+                $this->http_method=='POST'&&preg_match("#".strtolower($post_find)."#", strtolower($titre)))
+            {//si le mot de chercher est correspondant
                 //ajouter dans la page
                 $page .= "<div class='serie'>
                 <div class='serieDesc'>

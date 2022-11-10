@@ -138,8 +138,6 @@ class EpisodeAction extends Action
                         ConnectionFactory::makeConnection()->exec("insert into Commentaires values ({$_SESSION['idserie']},'{$user->email}',{$_POST['note']},'{$_POST['commentaire']}')");
                         $html .= "Merci pour votre commentaire";
                     }
-                } else {
-//                    $this->button1();
                 }
             }
         return $html;
@@ -160,7 +158,6 @@ class EpisodeAction extends Action
     }
 
     function createbutton() : string{
-//        echo "create :" . $this->loadadd(); //supprimer
         if ($this->loadadd()==1){
             return "<input type='submit' name='button1' id='b1' value='Retirer de la liste de préférences'>";
         }else{
@@ -172,20 +169,9 @@ class EpisodeAction extends Action
         $user = unserialize($_SESSION['user']);
         $idSerie = $_SESSION['idserie'];
         if ($this->loadadd()==1) {
-            echo "in";
             ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere=0 where id = {$user->id} and id_serie={$idSerie}");
         }else{
             ListAction::ajoutCondition($idSerie, 'Prefere');
-
-//            ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere=0 where id = {$user->id} and id_serie={$idSerie}");
-//        } else{
-//            $exist = ConnectionFactory::makeConnection()->query("select count(*) from liste_epv where id = {$user->id} and id_serie={$idSerie}");
-//            $exist->execute();
-//            if ($exist->fetch()[0]==0) {
-//                ConnectionFactory::makeConnection()->exec("insert into liste_epv(id,id_serie,estprefere) values ({$user->id},{$idSerie},1)");
-//            } else {
-//                ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere=1 where id = {$user->id} and id_serie={$idSerie}");
-//            }
         }
     }
 }
