@@ -12,37 +12,51 @@ class ShowCatalogueAction extends Action
     private Serie $serie;
     public function execute(): string{
         if(isset($_POST['find'])||isset($_GET['find'])){//si un client a cherché cataloque par mot clé, ajouter le dans url
-            $find=isset($_POST['find'])?$_POST['find']:$_GET['find'];
+            $find= $_POST['find'] ?? $_GET['find'];
             $menu="<menu>
 <a href='?action=show-catalogue&tir=titre&find=$find'><li>titre</li></a>
-<a href='?action=show-catalogue&tir=annee&find=$find'><li>yeur</li></a>
-<a href='?action=show-catalogue&tir=date-ajout&find=$find'><li>date make</li></a>
-<a href='?action=show-catalogue&tir=duree&find=$find'><li>time</li></a>
-<a href='?action=show-catalogue&tir=nb-episode&find=$find'><li>number of episode</li></a>
-<a href='?action=show-catalogue&find=$find'><li>default</li></a>
+<a href='?action=show-catalogue&tir=annee&find=$find'><li>année</li></a>
+<a href='?action=show-catalogue&tir=date-ajout&find=$find'><li>date d'ajout</li></a>
+<a href='?action=show-catalogue&tir=duree&find=$find'><li>Année de création</li></a>
+<a href='?action=show-catalogue&tir=nb-episode&find=$find'><li>Nombre d'épisodes</li></a>
+<a href='?action=show-catalogue&find=$find'><li>Par défaut</li></a>
 </menu>";
-        }else{
-            $menu="<menu>
+        }else {
+            $menu = "<menu>
 <a href='?action=show-catalogue&tir=titre'><li>titre</li></a>
-<a href='?action=show-catalogue&tir=annee'><li>yeur</li></a>
-<a href='?action=show-catalogue&tir=date-ajout'><li>date make</li></a>
-<a href='?action=show-catalogue&tir=duree'><li>time</li></a>
-<a href='?action=show-catalogue&tir=nb-episode'><li>number of episode</li></a>
-<a href='?action=show-catalogue'><li>default</li></a>
+<a href='?action=show-catalogue&tir=annee'><li>année</li></a>
+<a href='?action=show-catalogue&tir=date-ajout'><li>date d'ajout</li></a>
+<a href='?action=show-catalogue&tir=duree'><li>Année de création</li></a>
+<a href='?action=show-catalogue&tir=nb-episode'><li>Nombre d'épisodes</li></a>
+<a href='?action=show-catalogue'><li>Par défaut</li></a>
 </menu>";
         }
-        $tir=$_GET['tir'];
+
+        $tir= $_GET['tir'] ?? 'titre';
         //page html base
         $page = "<form method='post'>
-<input type='text' name='find'><input type='submit' value='find'>
+<input type='text' name='find'><input type='submit' value='Rechercher'>
 </form>
 <form method='post' action='?action=show-catalogue&tir=$tir'>
-<input type='submit' value='show all'>
+<input type='submit' value='Tout montrer'>
 </form>
-tir par:
-".$menu;
+
+<div class='menu'>
+trier par:
+$menu</div>
+<style>
+.menu{
+    text-align: left;       
+}
+
+li{
+display: inline;
+}
+
+</style>";
         $bdd = ConnectionFactory::makeConnection();
-        switch ($_GET['tir']){//tir les cataloge selon un choix de client
+        $tir= $_GET['tir'] ?? 'titre';
+        switch ($tir){//tir les cataloge selon un choix de client
             case 'titre':
                 $sql="select * from serie order by titre";break;
             case 'annee':
@@ -58,8 +72,13 @@ tir par:
         }
         $res = $bdd->query($sql);
         while ($row = $res->fetch(\PDO::FETCH_ASSOC)) {
+            $post_find = $_POST['find'] ?? "";
+
             $titre=$row['titre'];
-            if($this->http_method=='GET'&&(!isset($_GET['find'])||preg_match("#".strtolower($_GET['find'])."#", strtolower($titre)))||$this->http_method=='POST'&&preg_match("#".strtolower($_POST['find'])."#", strtolower($titre))){//si le mot de chercher est correspondant
+            if($this->http_method=='GET'&&(!isset($_GET['find'])||
+                    preg_match("#".strtolower($_GET['find'])."#", strtolower($titre)))||
+                $this->http_method=='POST'&&preg_match("#".strtolower($post_find)."#", strtolower($titre)))
+            {//si le mot de chercher est correspondant
                 //ajouter dans la page
                 $page .= "<div class='serie'>
                 <div class='serieDesc'>

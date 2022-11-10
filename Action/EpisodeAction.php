@@ -8,7 +8,6 @@ use DB\ConnectionFactory;
 class EpisodeAction extends Action
 {
     private episode $ep;
-    private bool $add;
 
     public function __construct(episode $e)
     {
@@ -18,13 +17,19 @@ class EpisodeAction extends Action
 
     public function execute(): string
     {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (!isset($_POST['commentButton'])) {
+                $this->button1();
+            }
+        }
+
         $html = "<div class='info'>
-                 <h1 id='title'> " . $this->ep->nom . "</h1>
+                 <h1 id='title'>{$this->ep->nom}</h1>
                  <video controls='' width='900'>
                  <source src='video/{$this->ep->url}' type='video/mp4'>
                  </video>
-                 <br class='epi'> durée : " . $this->ep->duree . "s<br>
-                 <br class='epi'> " . $this->ep->resume . "</br>
+                 <br class='epi'> durée : {$this->ep->duree}s<br>
+                 <br class='epi'>{$this->ep->resume}</br>
                  </div>
               
                  <form method='post'>
@@ -34,8 +39,8 @@ class EpisodeAction extends Action
                
                  <h1 class='title'>Commente la série</h1>
                  <form method='post' class='CommentForm'>
-                 <input id='note' class='form' type='number' name='note' placeholder='Note de la série' min='0' max='5'>
-                 <input id='comment' class='form' type='text' name='commentaire' placeholder='Commentaire'>      
+                 <input id='note' class='form' type='number' name='note' placeholder='Note de la série' min='0' max='5' required>
+                 <input id='comment' class='form' type='text' name='commentaire' placeholder='Commentaire' required>      
                  <button class='form' type='submit' name='commentButton'>Valider</button>
                  </form>
 
@@ -112,10 +117,8 @@ class EpisodeAction extends Action
 
         ";
 
-
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (isset($_POST['commentButton'])) {
-                    $this->add = !$this->add;
                     $comment = ConnectionFactory::makeConnection()->prepare("select count(*) from Commentaires where email = ? and idSerie=?");
                     $user = unserialize($_SESSION['user']);
                     $idSerie = $_SESSION['idserie'];
@@ -128,8 +131,6 @@ class EpisodeAction extends Action
                         ConnectionFactory::makeConnection()->exec("insert into Commentaires values ({$_SESSION['idserie']},'{$user->email}',{$_POST['note']},'{$_POST['commentaire']}')");
                         $html .= "Merci pour votre commentaire";
                     }
-                } else {
-                    $this->button1();
                 }
             }
         return $html;
@@ -143,33 +144,27 @@ class EpisodeAction extends Action
         $add->bindParam(2, $idSerie);
         $add->execute();
         $res = $add->fetch()[0];
+        if(is_null($res)){
+            $res = 0;
+        }
         return $res;
     }
 
     function createbutton() : string{
-        echo "create :" . $this->loadadd();
         if ($this->loadadd()==1){
             return "<input type='submit' name='button1' id='b1' value='Retirer de la liste de préférences'>";
-        } else {
+        }else{
             return "<input type='submit' name='button1' id='b1' value='Ajouter à la liste de préférences'>";
         }
     }
 
-    // ajoute la série à la liste de préférence de l'utilisateur ou la supprime si elle y est déjà
-    function button1() : void{
+    function button1(){
         $user = unserialize($_SESSION['user']);
         $idSerie = $_SESSION['idserie'];
-        $add = ConnectionFactory::makeConnection()->prepare("select estprefere from liste_epv where id = ? and id_serie=?");
-        $add->bindParam(1, $user->id);
-        $add->bindParam(2, $idSerie);
-        $add->execute();
-        $res = $add->fetch()[0];
-        if ($res==1){
-            ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere = 0 where id = {$user->id} and id_serie = {$idSerie}");
-            $user->listePrefere->remove($idSerie);
-        } else {
-            ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere = 1 where id = {$user->id} and id_serie = {$idSerie}");
-            $user->listePrefere->add($idSerie);
+        if ($this->loadadd()==1) {
+            ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere=0 where id = {$user->id} and id_serie={$idSerie}");
+        }else{
+            ListAction::ajoutCondition($idSerie, 'Prefere');
         }
     }
 }

@@ -17,17 +17,17 @@ class SigninAction extends Action
                     <td><input type=\"email\" name=\"email\" required></td>
                 </tr>
                 <tr>
-                    <th><label>mot de passe:</label></th>
+                    <th><label>Mot de passe:</label></th>
                     <td> <input type=\"password\" name=\"password\" required></td>
                 </tr>
                 <tr>
                     <th></th>
-                    <td><button type=\"submit\" name='login'>Sign in</button></td>  
+                    <td><button type=\"submit\" name='login'>Se connecter</button></td>  
                     </form>                          
                 </tr>
               </tbody>
           </table>                        
-          <a href='?action=reset-password'>forget password ?</a>
+          <a href='?action=reset-password'>Mot de passe oublié ?</a>
         
           <style>
          

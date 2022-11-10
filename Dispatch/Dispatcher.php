@@ -34,8 +34,9 @@ class Dispatcher
                     break;
                 case "episode":
                     User::checkLogin();
-//                    ListEnCoursAction::ajoutEnCours($_GET['id'],unserialize($_SESSION['user'])->id);
-                    ListAction::ajoutCondition($_GET['id'],'EnCours');
+
+                    $id_serie = Episode::getIDserie($_GET['id']);
+                    ListAction::ajoutCondition($id_serie,'EnCours');
                     $ac = new EpisodeAction(episode::getEpById($_GET['id']));
                     break;
                 case "reset-password":
@@ -82,10 +83,10 @@ class Dispatcher
         if (isset($_SESSION['user'])){
             $rubrique= "<a href='?action=acceuil'>Acceuil</a>
             <a href='?action=show-catalogue'>Catalogue</a>           
-            <a href='?action=sign-in'>Disconnect</a>";
+            <a href='?action=sign-in'>Déconnexion</a>";
         } else {
-            $rubrique = "<a href='?action=inscript'>Register</a>                       
-                            <a href='?action=sign-in'>Login</a>";
+            $rubrique = "<a href='?action=inscript'>S'enregistrer</a>                       
+                            <a href='?action=sign-in'>Se connecter</a>";
         }
 
         echo <<<END
