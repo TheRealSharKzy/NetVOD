@@ -28,7 +28,7 @@ class ActiveAction extends Action
                 }
             }else{//sinon envoyer son token à lui
                 $tok=Auth::actualiseToken($email);
-                return "$this->hostname$this->script_name?action=active&token=$tok";
+                return "<a href='?action=active&token=$tok'>Activation</a>";
             }
         }else{//sinon laisser il connecte
             $url="http://localhost:63342/NetVOD/index.php?action=sign-in";

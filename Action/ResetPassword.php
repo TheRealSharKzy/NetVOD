@@ -51,7 +51,7 @@ password: <input type='password' name='password'> password egain: <input type='p
                 if($query->rowCount()>0){//si le compte existe
                     //y envoyer un token
                     $tok=Auth::actualiseToken($email);
-                    return "$this->hostname$this->script_name?action=reset-password&token=$tok";
+                    return "<a href = '?action=reset-password&token=$tok'>Reset</a>";
                 }else{
                     return "this email is not inscrited.<br><br>".ResetPassword::$pageEmail;
                 }

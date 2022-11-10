@@ -36,7 +36,7 @@ class ProfilAction extends Action
                 //mettre a jour avec token
                 $tok=Auth::actualiseToken($email);
                 $email=$_POST['email'];
-                return "$this->hostname$this->script_name?action=profil&email=$email&token=$tok";
+                return "<a href='?action=profil&email=$email&token=$tok'>Mettre à jour</a>";
             }
         }elseif($this->http_method=='GET'){
             if(isset($_GET['token'])){
