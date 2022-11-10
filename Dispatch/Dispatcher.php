@@ -5,6 +5,7 @@ namespace Dispatch;
 use Action\ActiveAction;
 use Action\EpisodeAction;
 use Action\InscriptAction;
+use Action\ListAction;
 use Action\ListEnCoursAction;
 use Action\SerieListEpisodeAction;
 use Action\ResetPassword;
@@ -12,15 +13,20 @@ use Action\ShowCatalogueAction;
 use Action\SigninAction;
 use Catalogue\Episode\Episode;
 use DB\ConnectionFactory;
+use http\Header;
+use User\User;
 
 class Dispatcher
 {
     public function run(){
         $action = $_GET['action'] ?? null;
 
+
+
         if(!is_null($action)){
             switch ($action) {
                 case "inscript":
+                    Header('Location: ?action=show-catalogue');
                     $ac = new InscriptAction();
                     break;
                 case "sign-in":
@@ -30,36 +36,25 @@ class Dispatcher
                     $ac = new SigninAction();
                     break;
                 case "SerieListEpisode":
-                    if (isset($_SESSION['user'])) {
-                        $ac = new SerieListEpisodeAction();
-                    } else {
-                        $ac = new SigninAction();
-                    }
+                    User::checkLogin();
+                    $ac = new SerieListEpisodeAction();
                     break;
                 case "episode":
-                    ListEnCoursAction::ajoutEnCours($_GET['id'],unserialize($_SESSION['user'])->id);
-                    if (isset($_SESSION['user'])) {
-                        $ac = new EpisodeAction(episode::getEpById($_GET['id']));
-                    } else {
-                        $ac = new SigninAction();
-                    }
+                    User::checkLogin();
+//                    ListEnCoursAction::ajoutEnCours($_GET['id'],unserialize($_SESSION['user'])->id);
+                    ListAction::ajoutCondition($_GET['id'],'EnCours');
+                    $ac = new EpisodeAction(episode::getEpById($_GET['id']));
                     break;
                 case "reset-password":
                     $ac = new ResetPassword();
                     break;
-                case "ListEnCours":
-                    if (isset($_SESSION['user'])) {
-                        $ac = new ListEnCoursAction();
-                    } else {
-                        $ac = new SigninAction();
-                    }
+                case "List":
+                    User::checkLogin();
+                    $ac = new ListAction(); //besoin type : EnCours,Prefere,Visionne dans $_GET
                     break;
                 case "show-catalogue":
-                    if (isset($_SESSION['user'])) {
-                        $ac = new ShowCatalogueAction();
-                    } else {
-                        $ac = new SigninAction();
-                    }
+                    User::checkLogin();
+                    $ac = new ShowCatalogueAction();
                     break;
                 case "active":
                     $ac=new ActiveAction();
