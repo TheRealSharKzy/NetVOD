@@ -155,20 +155,21 @@ class EpisodeAction extends Action
         }
     }
 
-    function button1(){
+    // ajoute la série à la liste de préférence de l'utilisateur ou la supprime si elle y est déjà
+    function button1() : void{
         $user = unserialize($_SESSION['user']);
         $idSerie = $_SESSION['idserie'];
-        if ($this->loadadd()==1){
-            echo "in";
-            ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere=0 where id = {$user->id} and id_serie={$idSerie}");
-        } else{
-            $exist = ConnectionFactory::makeConnection()->query("select count(*) from liste_epv where id = {$user->id} and id_serie={$idSerie}");
-            $exist->execute();
-            if ($exist->fetch()[0]==0) {
-                ConnectionFactory::makeConnection()->exec("insert into liste_epv(id,id_serie,estprefere) values ({$user->id},{$idSerie},1)");
-            } else {
-                ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere=1 where id = {$user->id} and id_serie={$idSerie}");
-            }
+        $add = ConnectionFactory::makeConnection()->prepare("select estprefere from liste_epv where id = ? and id_serie=?");
+        $add->bindParam(1, $user->id);
+        $add->bindParam(2, $idSerie);
+        $add->execute();
+        $res = $add->fetch()[0];
+        if ($res==1){
+            ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere = 0 where id = {$user->id} and id_serie = {$idSerie}");
+            $user->listePrefere->remove($idSerie);
+        } else {
+            ConnectionFactory::makeConnection()->exec("update liste_epv set estprefere = 1 where id = {$user->id} and id_serie = {$idSerie}");
+            $user->listePrefere->add($idSerie);
         }
     }
 }
