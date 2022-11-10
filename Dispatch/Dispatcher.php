@@ -79,10 +79,10 @@ class Dispatcher
         if (isset($_SESSION['user'])){
             $rubrique= "<a href='?action=accueil'>Accueil</a>
             <a href='?action=show-catalogue'>Catalogue</a>           
-            <a href='?action=sign-in'>Disconnect</a>";
+            <a href='?action=sign-in'>Déconnexion</a>";
         } else {
-            $rubrique = "<a href='?action=inscript'>Register</a>                       
-                            <a href='?action=sign-in'>Login</a>";
+            $rubrique = "<a href='?action=inscript'>S'enregistrer</a>                       
+                            <a href='?action=sign-in'>Se connecter</a>";
         }
 
         echo <<<END

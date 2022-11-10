@@ -13,8 +13,8 @@ class InscriptAction extends Action
         $page="<form method='post'>
 <div><label>Pseudo:</label> <input type='text' name='pseudo' required></div>
 <div><label>Email:</label> <input type='email' name='email' required></div>
-<div><label>Password:</label> <input type='password' name='password' required></div>
-<div><label>Repeat password:</label> <input type='password' name='password2' required></div>
+<div><label>Mot de passe :</label> <input type='password' name='password' required></div>
+<div><label>Répéter mot de passe :</label> <input type='password' name='password2' required></div>
 <button type='submit'>S'inscrire</button>
 </form>
 

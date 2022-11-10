@@ -35,13 +35,25 @@ class ShowCatalogueAction extends Action
         $tir= $_GET['tir'] ?? 'titre';
         //page html base
         $page = "<form method='post'>
-<input type='text' name='find'><input type='submit' value='find'>
+<input type='text' name='find'><input type='submit' value='Rechercher'>
 </form>
 <form method='post' action='?action=show-catalogue&tir=$tir'>
-<input type='submit' value='show all'>
+<input type='submit' value='Tout montrer'>
 </form>
-tri par:
-".$menu;
+
+<div class='menu'>
+trier par:
+$menu</div>
+<style>
+.menu{
+    text-align: left;       
+}
+
+li{
+display: inline;
+}
+
+</style>";
         $bdd = ConnectionFactory::makeConnection();
         $tir= $_GET['tir'] ?? 'titre';
         switch ($tir){//tir les cataloge selon un choix de client
