@@ -2,18 +2,18 @@
 
 namespace Dispatch;
 
-use Action\AccueilAction;
+use Action\AcceuilAction;
 use Action\ActiveAction;
 use Action\EpisodeAction;
 use Action\InscriptAction;
 use Action\ListAction;
+use Action\ProfilAction;
 use Action\SerieListEpisodeAction;
 use Action\ResetPassword;
 use Action\ShowCatalogueAction;
 use Action\SigninAction;
+use Auth\Auth;
 use Catalogue\Episode\Episode;
-use DB\ConnectionFactory;
-use http\Header;
 use User\User;
 
 class Dispatcher
@@ -27,12 +27,6 @@ class Dispatcher
             switch ($action) {
                 case "inscript":
                     $ac = new InscriptAction();
-                    break;
-                case "sign-in":
-                    if (isset($_SESSION['user'])) {
-                        unset($_SESSION['user']);
-                    }
-                    $ac = new SigninAction();
                     break;
                 case "SerieListEpisode":
                     User::checkLogin();
@@ -59,11 +53,21 @@ class Dispatcher
                 case "active":
                     $ac=new ActiveAction();
                     break;
-                case "accueil":
+                case "acceuil":
                     User::checkLogin();
-                    $ac = new AccueilAction();
+                    $ac = new AcceuilAction();
+                    break;
+                case "sign-in":
+                    if(isset($_SESSION['user']))unset($_SESSION['user']);
+                    $ac = new SigninAction();
+                    break;
+                case "profil":
+                    if(!Auth::authenticateToken($_GET["token"]))User::checkLogin();
+                    $ac=new ProfilAction();
                     break;
                 default:
+                    $ac = new SigninAction();
+                    break;
             }
         }else{
             $ac=new SigninAction();
@@ -76,7 +80,7 @@ class Dispatcher
     public function renderPage(string $html){
         $rubrique ='';
         if (isset($_SESSION['user'])){
-            $rubrique= "<a href='?action=accueil'>Accueil</a>
+            $rubrique= "<a href='?action=acceuil'>Acceuil</a>
             <a href='?action=show-catalogue'>Catalogue</a>           
             <a href='?action=sign-in'>Disconnect</a>";
         } else {
@@ -96,7 +100,7 @@ class Dispatcher
 <body>
 
     <header>
-        <h1><a id="Header1" href = ?action=accueil>NetVOD</a></h1>
+        <h1><a id="Header1" href = ?action=acceuil>NetVOD</a></h1>
     </header>
 
     <nav>      

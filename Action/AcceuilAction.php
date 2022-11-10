@@ -2,7 +2,7 @@
 
 namespace Action;
 
-class AccueilAction extends Action
+class AcceuilAction extends Action
 {
     public function execute(): string
     {

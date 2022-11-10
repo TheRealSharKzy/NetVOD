@@ -135,7 +135,7 @@ class EpisodeAction extends Action
         return $html;
     }
 
-    function loadadd() : int{
+    function loadadd() : int|null{
         $user = unserialize($_SESSION['user']);
         $idSerie = $_SESSION['idserie'];
         $add = ConnectionFactory::makeConnection()->prepare("select estprefere from liste_epv where id = ? and id_serie=?");

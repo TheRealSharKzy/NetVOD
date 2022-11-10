@@ -34,4 +34,11 @@ class User
         }
     }
 
+    public function __set(string $name, $value): void
+    {
+        // TODO: Implement __set() method.
+        if(property_exists($this,$name))$this->$name=$value;
+        else throw new InvalideProperty();
+    }
+
 }

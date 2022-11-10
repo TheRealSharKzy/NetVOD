@@ -60,7 +60,7 @@ class SigninAction extends Action
                     if (Auth::getActive($email)) {//si le compte est activé
                         //connection passe
                         Auth::loadProfile($user);
-                        Header('Location: ?action=accueil');
+                        Header('Location: ?action=acceuil');
                     } else {
                         //aller activer
                         setcookie("user", $email);
